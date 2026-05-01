@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>by MM</title>
+    <link rel="stylesheet" href="styles.css">
+    <!--Favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/index2/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/index2/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/index2/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <!--Typefaces-->
+    <!--Self-Host
+    <link rel="preload" href="MangoGrotesque-Black.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="Estrella-Early.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="webfonts.css">-->
+    <!--3rd-Party-Host-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cossette+Titre:wght@400;700&family=Outfit:wght@100..900&family=Pirata+One&family=Zalando+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.typekit.net/pts5odv.css">
+    <link rel="stylesheet" href="https://use.typekit.net/mda1wve.css">
+</head>
+<body>
+    <!--<div class="dust-overlay" id="dust"></div>-->
+    <div class="dust-overlay"></div>
+    <div class="scanlines"></div>
+    <!--Pixelation Filter-->
+    <svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 0; height: 0; overflow: hidden;" viewBox="0 0 340 120">
+        <defs>
+            <filter id="glitchHover" primitiveUnits="objectBoundingBox" x="-10%" y="0%" width="120%" height="100%">
+            <feColorMatrix in="SourceGraphic" result="red" type="matrix" values="1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"/> 
+            <feColorMatrix in="SourceGraphic" result="green" type="matrix" values="0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0"/> 
+            <feColorMatrix in="SourceGraphic" result="blue" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0"/> 
+            <feOffset in="red" result="red-shifted" dx="-0.01" dy="0">
+                <animate attributeName="dx" keyTimes="0;0.2257;0.2354;0.2757;0.3492;0.5235;0.8075;1" values="0.0107;0.0237;0.0177;0.0275;0.0219;0.0035;0.0228;0.0107" begin="0" dur="8.7s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.2257;0.2354;0.2757;0.3492;0.5235;0.8075;1" values="0.0107;0.0237;0.0177;0.0275;0.0219;0.0035;0.0228;0.0107" begin="0" dur="8.7s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blue" result="blue-shifted" dx="0.01" dy="0">
+                <animate attributeName="dx" keyTimes="0;0.2647;0.5423;0.5841;0.5883;0.7501;0.8890;1" values="0.0184;0.0126;0.0250;0.0207;0.0016;0.0149;0.0090;0.0251" begin="0" dur="9.57s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.2647;0.5423;0.5841;0.5883;0.7501;0.8890;1" values="0.0184;0.0126;0.0250;0.0207;0.0016;0.0149;0.0090;0.0251" begin="0" dur="9.57s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feBlend mode="screen" in="red-shifted" in2="green" result="red-green"/>
+            <feBlend mode="screen" in="red-green" in2="blue-shifted" result="blended"/>
+            <feOffset in="blended" dx="0" dy="0" y="0%" height="6%" result="slice_0">
+                <animate attributeName="dx" keyTimes="0;0.3533;0.3945;0.4778;0.8412;0.9118;0.9762;1" values="0.0023;0.0088;0.0108;0.0125;0.0092;0.0127;0.0027;0.0084" begin="0s" dur="1.6355s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.3533;0.3945;0.4778;0.8412;0.9118;0.9762;1" values="0.0023;0.0088;0.0108;0.0125;0.0092;0.0127;0.0027;0.0084" begin="0s" dur="1.6355s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="6%" height="26%" result="slice_1">
+                <animate attributeName="dx" keyTimes="0;0.3160;0.6768;0.6928;0.8076;0.8811;0.9672;1" values="0.0079;0.0074;0.0107;0.0033;0.0119;0.0067;0.0070;0.0073" begin="0s" dur="1.7493s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.3160;0.6768;0.6928;0.8076;0.8811;0.9672;1" values="0.0079;0.0074;0.0107;0.0033;0.0119;0.0067;0.0070;0.0073" begin="0s" dur="1.7493s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="32%" height="10%" result="slice_2">
+                <animate attributeName="dx" keyTimes="0;0.1164;0.3560;0.7653;0.8200;0.9080;0.9235;1" values="0.0031;0.0011;0.0095;0.0030;0.0021;0.0125;0.0110;0.0073" begin="0s" dur="1.4082s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.1164;0.3560;0.7653;0.8200;0.9080;0.9235;1" values="0.0031;0.0011;0.0095;0.0030;0.0021;0.0125;0.0110;0.0073" begin="0s" dur="1.4082s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="42%" height="8%" result="slice_3">
+                <animate attributeName="dx" keyTimes="0;0.1791;0.2069;0.4204;0.4373;0.7437;0.9224;1" values="0.0123;0.0105;0.0120;0.0053;0.0067;0.0083;0.0038;0.0095" begin="0s" dur="1.1282s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.1791;0.2069;0.4204;0.4373;0.7437;0.9224;1" values="0.0123;0.0105;0.0120;0.0053;0.0067;0.0083;0.0038;0.0095" begin="0s" dur="1.1282s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="50%" height="6%" result="slice_4">
+                <animate attributeName="dx" keyTimes="0;0.2204;0.2582;0.2633;0.3458;0.5244;0.5397;1" values="0.0031;0.0065;0.0072;0.0087;0.0090;0.0014;0.0013;0.0067" begin="0s" dur="1.3618s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.2204;0.2582;0.2633;0.3458;0.5244;0.5397;1" values="0.0031;0.0065;0.0072;0.0087;0.0090;0.0014;0.0013;0.0067" begin="0s" dur="1.3618s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="56%" height="11%" result="slice_5">
+                <animate attributeName="dx" keyTimes="0;0.1968;0.3354;0.4156;0.4548;0.7475;0.8383;1" values="0.0068;0.0071;0.0097;0.0130;0.0119;0.0072;0.0050;0.0088" begin="0s" dur="1.5411s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.1968;0.3354;0.4156;0.4548;0.7475;0.8383;1" values="0.0068;0.0071;0.0097;0.0130;0.0119;0.0072;0.0050;0.0088" begin="0s" dur="1.5411s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="67%" height="13%" result="slice_6">
+                <animate attributeName="dx" keyTimes="0;0.0887;0.2142;0.4857;0.6041;0.7496;0.9835;1" values="0.0085;0.0071;0.0051;0.0128;0.0093;0.0123;0.0091;0.0074" begin="0s" dur="1.388s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.0887;0.2142;0.4857;0.6041;0.7496;0.9835;1" values="0.0085;0.0071;0.0051;0.0128;0.0093;0.0123;0.0091;0.0074" begin="0s" dur="1.388s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="80%" height="20%" result="slice_7">
+                <animate attributeName="dx" keyTimes="0;0.2669;0.5160;0.6021;0.7034;0.7622;0.9087;1" values="0.0124;0.0025;0.0119;0.0012;0.0105;0.0120;0.0037;0.0011" begin="0s" dur="1.4736s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.2669;0.5160;0.6021;0.7034;0.7622;0.9087;1" values="0.0124;0.0025;0.0119;0.0012;0.0105;0.0120;0.0037;0.0011" begin="0s" dur="1.4736s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feMerge>
+                <feMergeNode in="slice_0"/><feMergeNode in="slice_1"/><feMergeNode in="slice_2"/><feMergeNode in="slice_3"/><feMergeNode in="slice_4"/><feMergeNode in="slice_5"/><feMergeNode in="slice_6"/><feMergeNode in="slice_7"/>
+            </feMerge>
+            </filter>
+        </defs>
+        </svg>
+
+    <div class="scroll-container">
+        <section class="section-above hero-section">
+            <div id="heroHover">
+                <div class="card">
+                    <p>⊙ Mike Marshall</p>
+                    <div><span id="heroType">Mike</span></div> 
+                    <div><p>A multidisciplinary creator who designs, performs, and writes ☞</p></div>
+                </div>
+            </div>
+        </section>
+        <section class="section-above nav-card-section">
+            <div class="card">
+                <div>1</div>
+                <a href="design"><span>Design ↣</span></a>
+                        <div>As a designer, Mike is following the cult of you. He wants to know what rituals and iconography you (and your product) are made of – and why they should exist ☞</div>
+            </div>
+            <div class="card">
+                <div>2</div>
+                <a href="noise"><span>Noise ↣</span></a>
+                        <div>Mike has been making noise since he was born. With eclectic and exploratory sensibilities, he knows the value of a distinct voice in every choir ☞</div>
+            </div>
+            <div class="card">
+                <div>3</div>
+                <a href="words"><span>Words ↣</span></a>
+                        <div>Whether writing or editing, Mike tugs on the thread that holds the sentence, paragraph, or manuscript together, helping you find the poetry in anything ☞</div>
+            </div>
+            
+        </section>
+
+        <section class="section-behind work-section hero-anim">
+            <div class="work-stack" id="lcd-screen">
+                <div class="work-item">
+                    <div class="work-info"><h3>Technical Director</h3><span>Saturday Morning Books</span></div>
+                    <time>'25—TD</time>
+                </div>
+                <div class="work-item">
+                    <div class="work-info"><h3>Program Coordinator</h3><span>Deep River Public Library</span></div>
+                    <time>'24—26</time>
+                </div>
+                <div class="work-item">
+                    <div class="work-info"><h3>Web Producer</h3><span>Rogers Media & SJC</span></div>
+                    <time>'19—22</time>
+                </div>
+                <div class="work-item">
+                    <div class="work-info"><h3>Art Director</h3><span><i>Raconteur</i> &amp; <i>TEACH</i></span></div>
+                    <time>'17—20</time>
+                </div>
+                <div class="work-item">
+                    <div class="work-info"><h3>Editorial Consultant</h3><span>Freelance</span></div>
+                    <time>'17—TD</time>
+                </div>
+                <div class="work-item">
+                    <div class="work-info"><h3>Design Consultant</h3><span>Freelance</span></div>
+                    <time>'13—TD</time>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-above testimonial-section">
+            <div class="testimonial-wrapper">
+                <button class="slideArrow prev">↢</button>
+                <button class="slideArrow next">↣</button>
+                <div class="slider-container">
+                    <div class="slider-track">
+                        <div class="slide">
+                            <div class="card">
+                                <div>St. Joseph Communications</div>
+                                <blockquote><span>“He is able to explain technical things in simple terms, is calm under pressure and always quick to find creative solutions to challenges.”</span></blockquote><cite>— Amy Gibson, Digital Product Director</cite></div>
+                        </div>
+                        <div class="slide">
+                            <div class="card">
+                                <div>Toronto Woodworks</div>
+                                <blockquote><span>“Thorough. Efficient. Effective. I keep giving him contracts for a reason.”</span></blockquote><cite>— Gregory Moogk, CEO</cite></div>
+                        </div>
+                        <div class="slide">
+                            <div class="card">
+                                <div>Post Media</div>
+                                <blockquote><span>“Mike is the glue that holds the team together.”</span></blockquote><cite>— Duncan Clark, COO</cite></div>
+                        </div>
+                        <div class="slide">
+                            <div class="card">
+                                <div>Saturday Morning Books</div>
+                                <blockquote><span>“I always turn to Mike for a problem that needs 360 thinking. He will do the research, figure it out, and check the things I don’t think about. He makes sense of the chaos.”</span></blockquote><cite>— Salina Vanderhorn, Owner</cite></div>
+                        </div>
+                        <div class="slide">
+                            <div class="card">
+                                <div><i>TEACH Magazine</i></div>
+                                <blockquote><span>“We've actually hired an art director ... the impetus came from him to do so.”</span></blockquote><cite>— Wili Liberman, Editor in Chief</cite></div>
+                        </div>
+                        <div class="slide">
+                            <div class="card">
+                                <div><a href="https://www.brittgillman.com/">brittgillman.com</a></div>
+                                <blockquote><span>“I am immensely appreciative at how detailed he is, and I actually can't have imagined asking anyone else to look at this project now.”</span></blockquote><cite>— Britt Gillman, Author</cite></div>
+                        </div>
+                        <div class="slide">
+                            <div class="card">
+                                <div>Arktheos</div>
+                                <blockquote><span>“Looking forward to sticking this logo on a bunch of records and merch.”</span></blockquote><cite>— Darcy Ibson, Guitar &amp; Vocals</cite></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="section-above main-footer">
+            <div class="footer-id">
+                <p><strong>MIKE MARSHALL</strong></p>
+                <p>@bymsmarshall</p>
+                <div class="social-links">
+                    <a href="mailto:getintouch@bymichaelmarshall.com">Email</a> <a href="https://instagram.com/bymsmarshall">Instagram</a><a href="https://substack.com/@bymsmarshall">Substack</a>
+                </div>
+            </div>
+            <div class="footer-legal">
+                <a href="/terms">Terms & Privacy</a>
+                <p>© <span id="year"></span> All Rights Reserved</p>
+            </div>
+        </footer>
+    </div>
+
+    <nav class="cassette-menu">
+        <div class="power-indicator">
+            <div class="led"></div>
+            <span>PWR</span>
+        </div>
+        <div class="tape-control" onclick="window.location.href='/design'">
+            <input type="radio" name="nav" id="btn-design">
+            <label for="btn-design" class="btn-tape">Design</label>
+        </div>
+        <div class="tape-control" onclick="window.location.href='/noise'">
+            <input type="radio" name="nav" id="btn-noise">
+            <label for="btn-noise" class="btn-tape">Noise</label>
+        </div>
+        <div class="tape-control" onclick="window.location.href='/words'">
+            <input type="radio" name="nav" id="btn-words">
+            <label for="btn-words" class="btn-tape">Words</label>
+        </div>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+/*TYPE IMPORTS*/
+@font-face {
+  font-family: "Mango Grotesque";
+  font-weight: 900;
+  src: url("MangoGrotesque-Black.woff2") format("woff2"), url("MangoGrotesque-Black.woff")
+      format("woff");
+}
+
+@font-face {
+  font-family: "Estrella-Early";
+  font-weight: 400;
+  src: url("/assets/typefaces/Estrella-Early.woff2") format("woff2"), url("/assets/typefaces/Estrella-Early.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}

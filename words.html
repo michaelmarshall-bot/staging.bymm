@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Words | by MM</title>
+    <link rel="stylesheet" href="styles.css">
+    <!--Favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/index2/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/index2/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/index2/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <!--Typefaces-->
+    <!--Self-Host
+    <link rel="preload" href="MangoGrotesque-Black.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="Estrella-Early.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="webfonts.css">-->
+    <!--3rd-Party-Host-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Outfit:wght@100..900&family=Pirata+One&family=Zalando+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <style>
+        /*Hero Poem Styles*/
+        /*#poetsTagline {
+            min-width: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: all;
+            z-index: -1;
+            background-color: #ffffff00;
+        }
+        
+
+        #poemCTA {
+            position: relative;
+            background-color: #ffffff00;
+            margin: auto;
+            max-width: 550px;
+        }*/
+
+        :root {
+            --litMode-hue: hsl(from var(--card-bg-above) h s calc(l - 35));
+            --litMode-hue2: #CEC177;
+            --litMode-hue3: #B5DFE0;
+        }
+
+            #poetsTagline {
+                width: 100%;
+                max-width: 600px;
+                text-align: center;
+                pointer-events: all;
+                z-index: -1;
+                background-color: #ffffff00;
+            }
+
+            #poemCTA {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column-reverse;
+                margin-top: calc(var(--block-margin) * (1.618 * 3));
+            }
+
+            #poemCTA p {
+                padding-bottom: var(--block-margin);
+            }
+
+            /*Lit Switch*/
+        .litSwitchContainer {
+            margin: auto;
+            position: relative;
+            display: inline-block;
+            
+        }
+
+        @media (min-width: 1280px) {
+            .hero-section {
+                z-index: 201;
+            }
+
+            .hero-section.litMode {
+                z-index: 500
+            }
+            
+            #poetsTagline {
+                position: fixed;
+                top: 10%;
+                right: 5%;
+                width: 100%;
+                text-align: right;
+
+            }
+
+            #poemCTA {
+                display: flex;
+                align-items: flex-end;
+                justify-content: flex-end;
+                flex-direction: column;
+                margin-top: 0;
+                max-width: 100%;
+                z-index: 201;
+            }
+
+            #poemCTA p {
+                padding-right: 6px;
+                padding-bottom: 0;
+            }
+
+            .litSwitchContainer {
+            margin-right: 0;
+            margin-left: auto;
+            padding-bottom: var(--block-margin);
+        }
+        }
+
+        #litSwitch {
+            --input-focus: var(--card-bg-above);
+            --bg-color: #fff;
+            --bg-color-alt: #666;
+            --main-color: #323232;
+            --input-out-of-focus: var(--litMode-hue);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            width: 70px;
+            height: 36px;
+            transform: translateX(calc(50% - 10px));
+        }
+
+        .toggle {
+            opacity: 0;
+        }
+
+        .slider {
+            box-sizing: border-box;
+            border-radius: 100px;
+            border: 2px solid var(--main-color);
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--input-out-of-focus);
+            transition: 0.3s;
+        }
+
+        .slider:before {
+            content: "on";
+            box-sizing: border-box;
+            height: 30px;
+            width: 30px;
+            position: absolute;
+            left: 2px;
+            bottom: 1px;
+            border: 2px solid var(--main-color);
+            border-radius: 100px;
+            background-color: var(--bg-color);
+            color: var(--main-color);
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 25px;
+            transition: 0.3s;
+        }
+
+        .toggle:checked + .slider {
+            background-color: var(--input-focus);
+            transform: translateX(-32px);
+            border-radius: 0px;
+        }
+
+        .toggle:checked + .slider:before {
+            content: "off";
+            transform: translateX(32px);
+            border-radius: 0px;
+        }
+
+        /*Hero Styles*/
+
+        .hero-section {
+            height: unset;
+            min-height: 100vh;
+            margin-top: clamp(80px, 80px, 40px);
+        }
+
+            @media (min-width: 460px) {
+                .hero-section {
+                    margin-top: 0;
+                }
+           }
+
+        .hero-section .card {
+            user-select: none;
+        }
+
+        .hero-section .card > :nth-child(even) {
+            padding-top: calc((var(--type-ratio) * ((1.618) * 1)) * 1em);
+        }
+
+         .hero-section a {
+            text-decoration: underline;
+         }
+
+        .card:hover {
+            filter: none;
+        }
+
+         .hero-section a:hover {
+            filter: url(#glitchHover);
+         }
+
+        #heroType {
+            display: inline-block;
+            font: var(--h2-styles);
+            font-size: calc((var(--type-ratio) * 1.618) * 0.6em);
+            line-height: 0.8;
+            letter-spacing: var(--hed-letterspace);
+            margin-left: -4px;
+        }
+
+        @media (min-width:550px) {
+
+             .hero-section {
+                height: unset;
+                min-height: 100vh;
+            }
+
+            
+            #heroType {
+                font: var(--h2-styles);
+                line-height: 0.8;
+                letter-spacing: calc(var(--hero-letterspace) + 5px);
+            }
+            
+        }
+
+        .wordsBody {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+
+        .wordsBody > p {
+            margin-block-end: var(--block-margin);
+        }
+
+        .wordsBody > p:first-of-type {
+            margin-top: -20px;
+        }
+
+        .wordsBody p:last-of-type {
+            margin-block-end: 0;
+        }
+
+        .card > :nth-child(odd) {
+            flex-direction: column;
+        }
+
+        .footnote {
+            max-width: 600px;
+            margin: auto;
+            margin-top: 50px;
+            padding: 0px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            width: 90vw;
+            transition: 0.33s ease;
+            transform: var(--card-rotation);
+        }
+
+
+
+        @media (min-width: 1024px) {
+            .footnote {
+                width: 90%;
+            }
+        }
+
+        .footnote p {
+            background-color: var(--card-sub2);
+            font-size: calc(var(--fontBody-calc) - 2px);
+            border: var(--border-std);
+            color: var(--hed-colour);
+            padding: 5px;
+        }
+
+        .footnote p:last-of-type {
+            border-top: none;
+        }
+
+        .footnote.is-active {
+            transition: 0.33s ease;
+            transform-origin: top;
+            transform: translateY(-90%);
+        }
+
+        @media (min-width: 900px) {
+
+            .footnote.is-active {
+                transition: 0.33s ease;
+                transform-origin: right;
+                transform: translateY(0%);
+                transform: translateX(110%);
+            }
+        }
+
+        /*Hidden Hero Poem*/
+        .heroPoem-section {
+            min-width: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .heroPoem {
+            position: relative;
+            background-color: var(--bg-main);
+            margin: auto;
+            width: clamp(310px, 300px, 310px);
+        }
+
+        @media (min-width: 420px) {
+            .heroPoem {
+                width: clamp(390px, 300px, 390px);
+            }
+        }
+
+        .heroPoem > p:nth-of-type(3) {
+            padding-inline-start: 160px;
+        }
+
+        .heroPoem > p:nth-child(5) {
+            padding-inline-start: 160px;
+        }
+
+        .heroPoem > p:nth-child(7) {
+            padding-inline-start: 80px;
+        }
+
+        .heroPoem > p:nth-child(9) {
+            padding-inline-start: 160px;
+        }
+
+        /*Publication List*/
+        .pubHed-section {
+            margin-top: 25dvh;
+            margin-bottom: 1.5rem;
+        }
+
+        .pubHed {
+            width: 90vw;
+            margin: auto;
+        }
+
+        .pubHed.card > :nth-child(odd) {
+            padding: 0;
+            height: 0;
+        }
+
+        .work-section {
+            padding: unset;
+            position: relative;
+            top: unset;
+            left: unset;
+            transform: none;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            
+            margin-bottom: 25vh;
+        }
+
+        .work-stack {
+            user-select: contain;
+            margin: auto;
+        }
+        .work-stack a {
+            border: 1px solid var(--lcd-glow-color);
+            background-color: var(--bg-main);
+            box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.5); 
+            padding: 1.5rem 2rem;
+            max-width: 600px;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end;
+            font-family: var(--font-detail);
+            text-decoration: none;
+            width: 90%;
+        }
+
+        .work-stack a:hover {
+            /*width: 110%;*/
+            transform: scale(1.05);
+        }
+
+        a .work-item {
+            border: none;
+            background-color: none;
+            box-shadow: none; 
+            padding: 0;
+            width: 100%;
+            max-width: unset;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end;
+            font-family: inherit;
+            text-decoration: none;
+        }
+
+        a .work-info > h3 {
+            text-decoration: underline;
+        }
+
+        a:visited .work-info > h3 {
+            color: var(--card-sub3);
+        }
+
+        /*Superscripts*/
+        sup {
+            vertical-align: baseline;
+            position: relative;
+            top: -0.4em;
+            line-height: 0;
+        }
+
+        /*Lit Mode Active*/
+        :root.litMode {
+            /* TYPOGRAPHY */
+            --layout-ratio: 1.75;
+            --hed-type: "Pirata One", serif;
+            --body-type: "EB Garamond", sans-serif;
+            --font-body: normal 400 var(--fontBody-calc)/1.6 var(--body-type);
+            /*Color*/
+            --bg-main: #fafae6;
+        }
+
+        .dust-overlay.litMode {
+            position: initial; inset: 0; z-index: 100; pointer-events: none;
+            background-color: unset;
+            backdrop-filter: none;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' viewBox='0 0 700 700' width='700' height='700'%3E%3Cdefs%3E%3Cfilter id='nnnoise-filter' x='-20%25' y='-20%25' width='140%25' height='140%25' filterUnits='objectBoundingBox' primitiveUnits='userSpaceOnUse' color-interpolation-filters='linearRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.12' numOctaves='4' seed='15' stitchTiles='stitch' x='0%25' y='0%25' width='100%25' height='100%25' result='turbulence'%3E%3C/feTurbulence%3E%3CfeSpecularLighting surfaceScale='19' specularConstant='1.8' specularExponent='20' lighting-color='%23aea994' x='0%25' y='0%25' width='100%25' height='100%25' in='turbulence' result='specularLighting'%3E%3CfeDistantLight azimuth='3' elevation='131'%3E%3C/feDistantLight%3E%3C/feSpecularLighting%3E%3C/filter%3E%3C/defs%3E%3Crect width='700' height='700' fill='transparent'%3E%3C/rect%3E%3Crect width='700' height='700' fill='%23aea994' filter='url(%23nnnoise-filter)'%3E%3C/rect%3E%3C/svg%3E");
+            background-size: cover;
+            box-shadow: none;
+            min-height: 100vh;
+            background-position: center center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            margin: 0;
+        }
+
+        .scanlines.litMode {
+            display: none;
+        }
+
+        .slider.litMode {
+            font-family: 'EB Garamond', serif;
+        }
+
+        .card.litMode {
+            background: none;
+            border: none;
+        }
+
+        .card.litMode > :nth-child(1) {
+            display: none;
+        }
+
+        .card.litMode > :nth-child(even) {
+            z-index: 1;
+            letter-spacing: normal;
+            padding-top: 0;
+        }
+
+        .card.litMode > :nth-child(odd) {
+            background: none;
+        }
+        
+        .card.litMode.is-active {
+            background: none;
+            border: none;
+            transition: none;
+            transform-origin: none;
+            transform: translateY(0%);
+            transform: translateX(0%);
+        }
+
+        #poetsTagline.litMode {
+            margin-bottom: 4rem;
+        }
+
+        .hero-section.litMode .card {
+            cursor: default;
+            pointer-events: all;
+            user-select:contain;
+            isolation: none;
+            margin: 0;
+        }
+
+        .hero-section.litMode a:hover {
+            color: var(--litMode-hue3);
+            filter: none;
+        }
+
+        .heroPoem.litMode {
+            width: clamp(320px, 300px, 320px);
+        }
+
+        @media (min-width: 400px) {
+            .heroPoem.litMode {
+                width: clamp(390px, 300px, 390px);
+            }
+        }
+
+        .work-stack.litMode {
+                width: 90%;
+            }
+
+        @media (min-width: 670px) {
+            .work-stack.litMode {
+                width: 100%;
+            }
+        }
+
+        .pubHed-section.litMode {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        
+
+        .work-item.litMode {
+            border: none;
+            background: none;
+            box-shadow: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .hero-anim.litMode {
+            animation: none !important;
+        }
+
+        .work-item .hero-anim.litMode {
+            animation: none !important;
+        }
+
+        .work-item.litMode h3 {
+            font-family: 'EB Garamond', serif;
+            text-transform: none;
+            letter-spacing: normal;
+            font-weight: normal;
+        }
+
+        .work-stack.litMode a {
+            border: none;
+            background: none;
+            box-shadow: none; 
+            padding: 0;
+            max-width: 600px;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end;
+            font-family: var(--font-detail);
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .work-stack.litMode > a:hover {
+            filter: none;
+            width: 100%;
+            transform: scale(1);
+        }
+
+        a .work-info.litMode > h3 {
+            color: var(--litMode-hue);
+        }
+
+        a:visited .work-info.litMode > h3 {
+            color: var(--litMode-hue2);
+        }
+
+        a:hover .work-info.litMode > h3 {
+            color: var(--litMode-hue3);
+        }
+
+        .cassette-menu.litMode {
+            padding-bottom: 0px;
+            box-shadow: none; 
+            background: none;
+            border: none;
+            gap: 2px;
+        }
+
+        .led.litMode { display: none; }
+        .power-indicator.litMode { display: none; }
+
+        .btn-tape.litMode {
+            display: block;
+            padding: 0.7rem 1.4rem;
+            cursor: pointer;
+            border: solid 2px var(--hed-colour);
+            border-bottom: 0px;
+            border-radius: 0px;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            font-family: var(--hed-type);
+            font-size: 1rem;
+            box-shadow: 0 6px 0 #222; 
+            transition: 0.1s;
+            text-transform: uppercase;
+            color: #000;
+            transform: translateY(5px);
+            background: 
+                linear-gradient(180deg, hsl(from var(--bg-main) h 80 90)  0%, var(--bg-main) 40%);
+            filter: brightness(0.8); 
+        }
+
+        /* Pressed State */
+        .tape-control.litMode input:checked + .btn-tape { 
+            transform: translateY(0px); 
+            box-shadow: 0 6px 0 #444;
+            background: linear-gradient(180deg, hsl(from var(--bg-main) h 70 90)  0%, var(--bg-main) 45%);
+            filter: brightness(1); 
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+        @media (max-width: 768px) { 
+            .cassette-menu.litMode { 
+                right: 50%; 
+                transform: translateX(50%); 
+                width: 100vw;
+                border-radius: 0px;
+            } 
+        }
+
+        #heroType.litMode {
+            line-height: 0.9;
+            margin-bottom: -32px;
+            letter-spacing: normal;
+        }
+
+        .wordsBody.litMode {
+            padding: 0;
+        }
+
+        .wordsBody.litMode > p:first-of-type {
+            margin-top: inherit;
+        }
+
+        .footnote.litMode {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .footnote.litMode.is-active {
+            transition: none;
+            transform-origin: none;
+            transform: translateY(0%);
+            transform: translateX(0%);
+        }
+
+        .footnote.litMode p {
+            border: none;
+            padding-left: 0;
+            padding-right: 0;
+            background: none;
+        }
+
+        .footnote.litMode::before {
+            content:'';
+            height: 4.5px;
+            width: 46px;
+            background-color: var(--litMode-hue);
+            margin-bottom: 10px;
+        }
+
+        .footer-id.litMode p:first-of-type {
+            font-family: var(--hed-type);
+            text-transform: capitalize;
+        }
+
+        .social-links.litMode {
+            font-family: var(--hed-type);
+            text-transform: capitalize;
+        }
+
+        /*Ink Effect*/
+    
+        .ink-container.litMode {
+            mask: url("/assets/animation/nature-sprite.png");
+            mask-size: 2300% 100%;
+            -webkit-mask: url("/assets/animation/nature-sprite.png");
+            -webkit-mask-size: 2300% 100%;
+            /*Background Masks*/
+            mask-image: url("/assets/animation/nature-sprite.png");
+            mask-size: 2300% 100%;
+            -webkit-mask-image: url("/assets/animation/nature-sprite.png");
+            -webkit-mask-size: 2300% 100%;
+            
+            background-blend-mode: multiply;
+            animation: ink-in 1s steps(22) backwards;
+        }
+
+        @keyframes ink-in {
+            from { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
+            to { -webkit-mask-position: 0 0; mask-position: 0 0; }
+        }
+
+        @keyframes ink-out {
+            from { -webkit-mask-position: 0 0; mask-position: 0 0; }
+            to { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
+        }
+
+         .cassette-menu.ink-container.litMode {
+            animation: none;
+         }
+
+        .cassette-menu.ink-container.litMode .tape-control:last-of-type {
+            animation: up-slide 1s ease-in;
+        }
+
+        .cassette-menu.ink-container.litMode .tape-control:nth-of-type(3) {
+            animation: up-slide 1s ease-in 0.85s;
+            animation-fill-mode: both;
+        }
+
+        .cassette-menu.ink-container.litMode .tape-control:nth-of-type(2) {
+            animation: up-slide 1s ease-in 1s;
+            animation-fill-mode: both;
+        }
+
+
+         @keyframes up-slide {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0%); }
+        }
+
+        /*Screen Effect*/
+
+        .switchGlitch {
+            animation: bodyGlitch 1s ease-out none 1;
+        }
+
+        @keyframes bodyGlitch {
+            50% {
+                -webkit-filter: url(#glitchHover); 
+                filter: url(#glitchHover);
+            }
+        }
+
+    </style>
+</head>
+<body id="glitchBody">
+    <!--<div class="dust-overlay" id="dust"></div>-->
+    <div class="dust-overlay"></div>
+    <div class="scanlines"></div>
+    <!--Pixelation Filter-->
+    <svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 0; height: 0; overflow: hidden;" viewBox="0 0 340 120">
+        <defs>
+            <filter id="glitchHover" primitiveUnits="objectBoundingBox" x="-10%" y="0%" width="120%" height="100%">
+            <feColorMatrix in="SourceGraphic" result="red" type="matrix" values="1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"/> 
+            <feColorMatrix in="SourceGraphic" result="green" type="matrix" values="0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0"/> 
+            <feColorMatrix in="SourceGraphic" result="blue" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0"/> 
+            <feOffset in="red" result="red-shifted" dx="-0.01" dy="0">
+                <animate attributeName="dx" keyTimes="0;0.2257;0.2354;0.2757;0.3492;0.5235;0.8075;1" values="0.0107;0.0237;0.0177;0.0275;0.0219;0.0035;0.0228;0.0107" begin="0" dur="8.7s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.2257;0.2354;0.2757;0.3492;0.5235;0.8075;1" values="0.0107;0.0237;0.0177;0.0275;0.0219;0.0035;0.0228;0.0107" begin="0" dur="8.7s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blue" result="blue-shifted" dx="0.01" dy="0">
+                <animate attributeName="dx" keyTimes="0;0.2647;0.5423;0.5841;0.5883;0.7501;0.8890;1" values="0.0184;0.0126;0.0250;0.0207;0.0016;0.0149;0.0090;0.0251" begin="0" dur="9.57s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.2647;0.5423;0.5841;0.5883;0.7501;0.8890;1" values="0.0184;0.0126;0.0250;0.0207;0.0016;0.0149;0.0090;0.0251" begin="0" dur="9.57s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feBlend mode="screen" in="red-shifted" in2="green" result="red-green"/>
+            <feBlend mode="screen" in="red-green" in2="blue-shifted" result="blended"/>
+            <feOffset in="blended" dx="0" dy="0" y="0%" height="6%" result="slice_0">
+                <animate attributeName="dx" keyTimes="0;0.3533;0.3945;0.4778;0.8412;0.9118;0.9762;1" values="0.0023;0.0088;0.0108;0.0125;0.0092;0.0127;0.0027;0.0084" begin="0s" dur="1.6355s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.3533;0.3945;0.4778;0.8412;0.9118;0.9762;1" values="0.0023;0.0088;0.0108;0.0125;0.0092;0.0127;0.0027;0.0084" begin="0s" dur="1.6355s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="6%" height="26%" result="slice_1">
+                <animate attributeName="dx" keyTimes="0;0.3160;0.6768;0.6928;0.8076;0.8811;0.9672;1" values="0.0079;0.0074;0.0107;0.0033;0.0119;0.0067;0.0070;0.0073" begin="0s" dur="1.7493s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.3160;0.6768;0.6928;0.8076;0.8811;0.9672;1" values="0.0079;0.0074;0.0107;0.0033;0.0119;0.0067;0.0070;0.0073" begin="0s" dur="1.7493s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="32%" height="10%" result="slice_2">
+                <animate attributeName="dx" keyTimes="0;0.1164;0.3560;0.7653;0.8200;0.9080;0.9235;1" values="0.0031;0.0011;0.0095;0.0030;0.0021;0.0125;0.0110;0.0073" begin="0s" dur="1.4082s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.1164;0.3560;0.7653;0.8200;0.9080;0.9235;1" values="0.0031;0.0011;0.0095;0.0030;0.0021;0.0125;0.0110;0.0073" begin="0s" dur="1.4082s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="42%" height="8%" result="slice_3">
+                <animate attributeName="dx" keyTimes="0;0.1791;0.2069;0.4204;0.4373;0.7437;0.9224;1" values="0.0123;0.0105;0.0120;0.0053;0.0067;0.0083;0.0038;0.0095" begin="0s" dur="1.1282s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.1791;0.2069;0.4204;0.4373;0.7437;0.9224;1" values="0.0123;0.0105;0.0120;0.0053;0.0067;0.0083;0.0038;0.0095" begin="0s" dur="1.1282s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="50%" height="6%" result="slice_4">
+                <animate attributeName="dx" keyTimes="0;0.2204;0.2582;0.2633;0.3458;0.5244;0.5397;1" values="0.0031;0.0065;0.0072;0.0087;0.0090;0.0014;0.0013;0.0067" begin="0s" dur="1.3618s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.2204;0.2582;0.2633;0.3458;0.5244;0.5397;1" values="0.0031;0.0065;0.0072;0.0087;0.0090;0.0014;0.0013;0.0067" begin="0s" dur="1.3618s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="56%" height="11%" result="slice_5">
+                <animate attributeName="dx" keyTimes="0;0.1968;0.3354;0.4156;0.4548;0.7475;0.8383;1" values="0.0068;0.0071;0.0097;0.0130;0.0119;0.0072;0.0050;0.0088" begin="0s" dur="1.5411s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.1968;0.3354;0.4156;0.4548;0.7475;0.8383;1" values="0.0068;0.0071;0.0097;0.0130;0.0119;0.0072;0.0050;0.0088" begin="0s" dur="1.5411s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="67%" height="13%" result="slice_6">
+                <animate attributeName="dx" keyTimes="0;0.0887;0.2142;0.4857;0.6041;0.7496;0.9835;1" values="0.0085;0.0071;0.0051;0.0128;0.0093;0.0123;0.0091;0.0074" begin="0s" dur="1.388s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.0887;0.2142;0.4857;0.6041;0.7496;0.9835;1" values="0.0085;0.0071;0.0051;0.0128;0.0093;0.0123;0.0091;0.0074" begin="0s" dur="1.388s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="80%" height="20%" result="slice_7">
+                <animate attributeName="dx" keyTimes="0;0.2669;0.5160;0.6021;0.7034;0.7622;0.9087;1" values="0.0124;0.0025;0.0119;0.0012;0.0105;0.0120;0.0037;0.0011" begin="0s" dur="1.4736s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.2669;0.5160;0.6021;0.7034;0.7622;0.9087;1" values="0.0124;0.0025;0.0119;0.0012;0.0105;0.0120;0.0037;0.0011" begin="0s" dur="1.4736s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feMerge>
+                <feMergeNode in="slice_0"/><feMergeNode in="slice_1"/><feMergeNode in="slice_2"/><feMergeNode in="slice_3"/><feMergeNode in="slice_4"/><feMergeNode in="slice_5"/><feMergeNode in="slice_6"/><feMergeNode in="slice_7"/>
+            </feMerge>
+            </filter>
+        </defs>
+        </svg>
+    </div>
+    <div class="scroll-container">
+        <section class="section-above hero-section ink-container" id="wordsHeader">
+            <div>
+
+                <div class="card">
+                    <p>Pen Name | Pseudonym | Nom de Plume</p>
+                    <div><span id="heroType">M.S. Marshall</span></div> 
+                    <div class="wordsBody">
+                        <p>is a writer, editor, and <a href="design">book designer</a>. He has edited prize winning and long listed memoir and creative nonfiction<sup>1</sup>; written copy and designed for literary magazines and award winning legacy titles<sup>2</sup>; and published short fiction and poetry in both English and <a href="https://en.wikipedia.org/wiki/Scots_language">Scots.</a></p>
+                        <p>He was also a finalist in NYC Midnight’s 2018 Short Story Competition and shortlisted for Dark Poets Club’s 2025 Small Space, Deep Impact Prize. He holds an MSc in Creative Writing from the University of Edinburgh and a GradCert in Publishing from Centennial College.</p>
+                        <p>Originally from the UK, he now lives in Canada where, along with <a href="design">designing</a> and <a href="noise">making music</a>, he hosts workshops, moderates author events, and learns as much as he teaches.</p>
+                    </div>
+                </div>
+                <div class="footnote">
+                            <p>1. <i>EVENT Magazine</i>, <i>PRISM International</i>, CBC Nonfiction Prize, <i>The New York Times</i>, <i>Eavesdrop Magazine</i>, <i>The Ex-Puritan</i>.</p>
+                            <p>2. <i>Canadian Business</i>, <i>Chatelaine</i>, <i>FASHION</i>, <i>FLARE</i>, <i>Maclean’s</i>, <i>MinK</i>, <i>Raconteur Literary Magazine</i>, <i>TEACH Magazine.</i></p>
+                </div>
+
+                <div id="poetsTagline">
+                    <div id="poemCTA">
+                        
+                        <div class="litSwitchContainer">
+                            <label id="litSwitch">
+                                <input type="checkbox" class="toggle" checked>
+                                <span class="slider"></span>
+                                <span class="card-side"></span>
+                            </label>
+                        </div>
+                        <p><i>Find the poetry behind anything.</i></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+
+        <section class="section-behind heroPoem-section ink-container">
+                <div class="heroPoem">
+                    <p><i>Disturbed</i><br>&emsp;</p>
+                    <p>I'm sorry to disturb you,</p>
+                    <p>Disturb away.</p>
+                    <p>I can see that you're busy,</p>
+                    <p>I welcome the distraction.</p>
+                    <p>Are you sure?</p>
+                    <p>I live in hope that you'll disturb my grave<br>long after I'm dead.</p>
+                    <p>It's about the money&mdash;</p>
+                    <p>Buy a trowel.</p>
+                </div>
+        </section>
+
+        <section class="section-above pubHed-section ink-container">
+            <div class="card pubHed">
+            <div></div>
+                <a><span>Publications</span></a>
+                <div></div>
+            </div>
+        </section>
+
+        <section class="section-above work-section ink-container">
+            <div class="work-stack" id="lcd-screen">
+                <div class="work-item">
+                    <div class="work-info">
+                        <h3>“The Breaking of the Urn”</h3>
+                        <span><i>Interim</i>, Vol. 41, Issue 1</span>
+                    </div>
+                    <time>2026</time>
+                </div>
+                <div class="work-item">
+                    <div class="work-info">
+                        <h3>“Fascists Planting Bulbs,”<br>“Fascists Raising Children,”<br>“Fascists Watching Birds.”</h3>
+                        <span><i>The New Absurdist</i></span>
+                    </div>
+                    <time>2026</time>
+                </div>
+                <a href="https://www.darkpoets.club/post/mr-jenkins">
+                    <div class="work-item">
+                        <div class="work-info">
+                            <h3 class="hero-anim">“Mr. Jenkins”</h3>
+                            <span><i>Dark Poets Club</i></span>
+                        </div>
+                        <time>2026</time>
+                    </div>
+                </a>
+                <a href="https://www.darkpoets.club/post/the-birthday-parting">
+                    <div class="work-item">
+                        <div class="work-info">
+                            <h3 class="hero-anim">“The Birthday Parting”</h3>
+                            <span><i>Dark Poets Club</i>, Small Space Deep Impact shortlist</span>
+                        </div>
+                        <time>2025</time>
+                    </div>
+                </a>
+                <div class="work-item">
+                    <div class="work-info">
+                        <h3>“There&rsquo;s still a boat in New Bonaventure”</h3>
+                        <span><i>Paddler Press: Canada</i>, Vol. 14.</span>
+                    </div>
+                    <time>2025</time>
+                </div>
+                <div class="work-item">
+                    <div class="work-info">
+                        <h3>“Tasmanian Devil”</h3>
+                        <span><i>Lallans</i>, 93. (Yuil)</span>
+                    </div>
+                    <time>2018</time>
+                </div>
+                <div class="work-item">
+                    <div class="work-info">
+                        <h3>“The Irish, Hysteria, & Guy Fawkes: The Fenian Demonstration of Guy Fawkes Night 1864 and Upper Canada.”</h3>
+                        <span><i>Garm Lu</i></span>
+                    </div>
+                    <time>2015</time>
+                </div>
+            </div>
+        </section>
+
+        <footer class="section-above main-footer">
+            <div class="footer-id">
+                <p>M.S. Marshall</p>
+                <p>@bymsmarshall</p>
+                <div class="social-links">
+                    <a href="mailto:getintouch@bymichaelmarshall.com">Email</a>
+                    <a href="https://instagram.com/bymsmarshall">Instagram</a>
+                    <a href="https://substack.com/@bymsmarshall">Substack</a>
+                </div>
+            </div>
+            <div class="footer-legal">
+                <a href="/terms">Terms & Privacy</a>
+                <p>© <span id="year"></span> All Rights Reserved</p>
+            </div>
+        </footer>
+    </div>
+
+    <nav class="cassette-menu ink-container">
+        <div class="power-indicator">
+            <div class="led"></div>
+            <span>PWR</span>
+        </div>
+            <div class="tape-control" onclick="window.location.href='/design'">
+                <input type="radio" name="nav" id="btn-design">
+                <label for="btn-design" class="btn-tape">Design</label>
+            </div>
+            <div class="tape-control" onclick="window.location.href='/noise'">
+                <input type="radio" name="nav" id="btn-noise">
+                <label for="btn-noise" class="btn-tape">Noise</label>
+            </div>
+            <div class="tape-control" onclick="window.location.href='/words'">
+                <input checked type="radio" name="nav" id="btn-words">
+                <label for="btn-words" class="btn-tape">Words</label>
+            </div>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>
