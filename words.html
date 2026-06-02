@@ -757,6 +757,39 @@
             }
         }
 
+        /*Forthcoming Button*/
+        .forthcoming {
+          border-right: solid 5px hsl(var(--card-hue), 70%, 60%);
+        }
+
+        .forthcomingTag {
+            font-style: italic;
+            margin-left: auto;
+            margin-right: 10%;
+            text-align: right;
+        }
+        .forthcomingTag span {
+            color: hsl(var(--card-hue), 70%, 60%);
+        }
+
+        .work-stack.litMode .forthcomingTag {
+             margin: auto;
+        }
+
+        .work-stack.litMode .forthcomingTag span:nth-child(1) {
+            display: none;
+        }
+
+        .work-stack .dagger {
+            display: none;
+            color: var(--litMode-hue);
+        }
+
+        .work-stack.litMode .dagger {
+            display: inline;
+            color: var(--litMode-hue);
+        }
+
     </style>
 </head>
 <body id="glitchBody">
@@ -879,19 +912,20 @@
 
         <section class="section-above work-section ink-container">
             <div class="work-stack" id="lcd-screen">
-                <div class="work-item">
+                <div class="forthcomingTag">Coming Soon &nbsp;<span><b>|</b></span><span class="dagger">&#8224;</span></div>
+                <div class="work-item forthcoming">
                     <div class="work-info">
                         <h3>“The Breaking of the Urn”</h3>
                         <span><i>Interim</i>, Vol. 41, Issue 1</span>
                     </div>
-                    <time>2026</time>
+                    <time>2026<span class="dagger">&#8224;</span></time>
                 </div>
-                <div class="work-item">
+                <div class="work-item forthcoming">
                     <div class="work-info">
                         <h3>“Fascists Planting Bulbs,”<br>“Fascists Raising Children,”<br>“Fascists Watching Birds.”</h3>
                         <span><i>The New Absurdist</i></span>
                     </div>
-                    <time>2026</time>
+                    <time>2026<span class="dagger">&#8224;</span></time>
                 </div>
                 <a href="https://www.darkpoets.club/post/mr-jenkins">
                     <div class="work-item">
