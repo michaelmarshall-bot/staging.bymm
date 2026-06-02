@@ -369,6 +369,10 @@
             padding: 4rem 0;
         }
 
+        #transcript-section > .card:hover {
+            filter: none;
+        }
+
         .transcript p {
             padding-bottom: var(--block-margin);
         }
@@ -481,6 +485,83 @@
                     padding-left: 2px;
                 }
         }
+
+        #transcript-section .card {
+                cursor: default;
+        }
+
+        /*Read More button*/
+        /* Hide the actual checkbox */
+            .read-more-state {
+                display: none;
+            }
+
+            /* Initially hide the extra content */
+            .read-more-target {
+                opacity: 0;
+                max-height: 0;
+                font-size: 0;
+                transition: .25s ease;
+                padding: 0px;
+            }
+
+            /* Show content when checkbox is checked */
+            .read-more-state:checked ~ .read-more-wrap .read-more-target {
+                opacity: 1;
+                font-size: inherit;
+                max-height: 999px;
+            }
+
+            /* Button styling */
+            .read-more-trigger {
+                cursor: pointer;
+                display: inline-block;
+                text-decoration: underline;
+                color: hsl(var(--card-hue), 70%, 40%);
+            }
+
+            .read-more-state:checked ~ .read-more-trigger {
+                color: hsl(var(--card-hue), 0%, 50%);
+            }
+
+            @media (hover: hover) {
+                
+                .transcript a {
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+                
+                .transcript a:hover {
+                    filter: url(#glitchHover)
+                }
+                
+                .read-more-trigger:hover {
+                    filter: url(#glitchHover)
+                }   
+            }
+
+  
+
+            /* Change button text using pseudo-elements */
+            .read-more-trigger:before {
+                content: 'Read more';
+            }
+
+            .read-more-state:checked ~ .read-more-trigger:before {
+                content: 'Read less';
+            }
+
+            .transcript .read-more-wrap p {
+                padding-bottom: 0px;
+            }
+
+            .transcript .read-more-state:checked ~ .read-more-wrap p {
+                padding-bottom: var(--block-margin);
+            }
+
+            .transcript:has(.read-more-wrap) p:last-of-type {
+                padding-bottom: var(--block-margin);
+            }
         
 
     </style>
@@ -735,9 +816,9 @@
                             <li class="track-item active" data-src="assets/audio/portfolioIntro-V1.mp3">01. Introduction ⊙</li>
                             <li class="track-item" data-src="assets/audio/harrysReel-DEMO.mp3">02. Harry's Reel | RWL Demo</li>
                             <li class="track-item" data-src="assets/audio/poached-RWLDemo.mp3">03. Poached | RWL Demo</li>
-                            <li class="track-item" data-src="">04. [ADD FILE] Tasmanian Devil | Narration</li>
-                            <li class="track-item" data-src="assets/audio/mephisto-DEMO.mp3">04. Mephisto | Reference Demo</li>
-                            <li class="track-item" data-src="">05. [ADD FILE] Lidérc | Reference Demo</li>
+                            <li class="track-item" data-src="">04. Tasmanian Devil | Narration</li>
+                            <li class="track-item" data-src="assets/audio/TasmanianDevil-VO-Tease.mp3">04. Mephisto | Reference Demo</li>
+                            <li class="track-item" data-src="assets/audio/lidérc-DEMO.mp3">05. Lidérc | Reference Demo</li>
                             <li class="track-item" data-src="assets/audio/whenIWasYoung-ThePeculiar.mp3">06. When I Was Young | The Peculiar</li>
                             <li class="track-item" data-src="assets/audio/endingAgain-DEMO.mp3">07. Ending, Again | Demo</li>
                         </ul>
@@ -766,32 +847,36 @@
                 <a><span>Tasmanian Devil</span></a>
                 <div>
                     <span class="transcript">
-                    <p><i>A note for English speakers:</i> The majority of this piece is written in lowland Scots, a west-germanic language with similarities to English. Though mutually intelligble, its vernacular is distinct.<br>
-                    <i>A note for Scots speakers:</i> Apologies for my pronunciation.</p>
+                        <p><i>A note for English speakers:</i> The majority of this piece is written in lowland <a href="https://en.wikipedia.org/wiki/Scots_language">Scots</a>, a west-germanic language with similarities to English. Though mutually intelligble, its vernacular is distinct.</p>
+                        <p><i>A note for Scots speakers:</i> Apologies for my pronunciation.</p>
 
-                    <p><i>Dramatic reading originally recorded for accessibility.</i></p>
+                        <p><i>Dramatic reading originally recorded for accessibility.</i></p>
 
-                    <hr>
+                        <hr>
 
-                    <p>&ldquo;Tasmanian Devil by M.S. Marshall, first published in <i>Lallans</i> 93, yuil 2018.&rdquo;</p>
+                        <p>&ldquo;Tasmanian Devil by M.S. Marshall, first published in <i>Lallans</i> 93, yuil 2018.&rdquo;</p>
 
-                    <p>&ldquo;Dear Sir,</p>
+                        <p>&ldquo;Dear Sir,</p>
 
-                    <p>I hope this letter finds you in good health. I wish this in part for it bears tidings of the gravest import and utmost gravity. I fear in my explanations that I would digress or muddle such details as I possess so I shall scrawl no further; the materials I have included shall speak for themselves, though it is a gruesome account I feel bound that the law must hear it. Know that these are the words of John Murdoch and that, though he writes as he speaks, he is a most honourable and pious man. He resides only a little to the east; it is a place of loneliness and mist and I fear it now plays host to more than grouse and crow.</p>
+                        <p>I hope this letter finds you in good health. I wish this in part for it bears tidings of the gravest import and utmost gravity. I fear in my explanations that I would digress or muddle such details as I possess so I shall scrawl no further; the materials I have included shall speak for themselves, though it is a gruesome account I feel bound that the law must hear it. Know that these are the words of John Murdoch and that, though he writes as he speaks, he is a most honourable and pious man. He resides only a little to the east; it is a place of loneliness and mist and I fear it now plays host to more than grouse and crow.</p>
 
-                    <p class="t-centre">*</p> 
+                        <input type="checkbox" id="read-more-toggle" class="read-more-state" />
+                        <div class="read-more-wrap">
+                            <p class="t-centre read-more-target">*</p> 
 
-                    <p>I await her, I ken her scent an the air. This hoose is besiegit by the blackest o souls. I am compellit tae scrive this accoont lest the truth o the matter be kent only tae God as I am his honest witness. The deil conspires tae ruin this ferm an in his fashion he sends his servands as the unassumin an the obedient – that is hoo foolness cams an lives ithin the walls. She took ma bairn frae me.</p>
+                            <p class="read-more-target">I await her, I ken her scent an the air. This hoose is besiegit by the blackest o souls. I am compellit tae scrive this accoont lest the truth o the matter be kent only tae God as I am his honest witness. The deil conspires tae ruin this ferm an in his fashion he sends his servands as the unassumin an the obedient – that is hoo foolness cams an lives ithin the walls. She took ma bairn frae me.</p>
 
-                    <p>The day the deil cam tae me – it wis a wretchit day o smirr an I wis crabbit frae saddle-soreness gien me by the ride tae Perth. In ma weakness, I took on that wretchit maid. The feein day hadna faurt me weell an Mrs. McNab naggit at a need tae fill the place o the Kyles lass, pregnant hoor. I gid ma nod for the hire just tae steel away that hoosekeeper’s lurid tongue. Sicna insidious exchange, tae tak advantage o ma distraction, I did nae fash tae see the girl for whit she was; no maid, no even just furrin scuff. Ay, she wis the only lass for feein that day an in ma haste I broucht Beelzebub into ma hame.</p>
+                            <p class="read-more-target">The day the deil cam tae me – it wis a wretchit day o smirr an I wis crabbit frae saddle-soreness gien me by the ride tae Perth. In ma weakness, I took on that wretchit maid. The feein day hadna faurt me weell an Mrs. McNab naggit at a need tae fill the place o the Kyles lass, pregnant hoor. I gid ma nod for the hire just tae steel away that hoosekeeper’s lurid tongue. Sicna insidious exchange, tae tak advantage o ma distraction, I did nae fash tae see the girl for whit she was; no maid, no even just furrin scuff. Ay, she wis the only lass for feein that day an in ma haste I broucht Beelzebub into ma hame.</p>
 
-                    <p>Twis nae lang afore ma dauchter lay, back archit, aneath the black alder. It wis me who heftit ma poor gilpey frae a gate post, impalit like the son o God himsel, tho it wisna a roman who drove iron through ma bairn’s fair flesh. It wis the fa frae her chamber windae – a fa is whit McNab widha haed me believe.</p>
+                            <p class="read-more-target">Twis nae lang afore ma dauchter lay, back archit, aneath the black alder. It wis me who heftit ma poor gilpey frae a gate post, impalit like the son o God himsel, tho it wisna a roman who drove iron through ma bairn’s fair flesh. It wis the fa frae her chamber windae – a fa is whit McNab widha haed me believe.</p>
 
-                    <p>Ma bairn wis pusht frae the sill by that blackguard maid. As I stand crustit wi the blood o ma kin that accursit hoosekeeper spake in defense o the maid! She wid hae me ken that ma dauchter wis a cheap hoor, vaultin frae the sill tae lie wi the stable hand as I lay sleepin in ignorance – she in a bed o hay, moontit like the horses! I struck McNab tae the dirt for all her insolence, an sic did she deser it.</p>
+                            <p class="read-more-target">Ma bairn wis pusht frae the sill by that blackguard maid. As I stand crustit wi the blood o ma kin that accursit hoosekeeper spake in defense o the maid! She wid hae me ken that ma dauchter wis a cheap hoor, vaultin frae the sill tae lie wi the stable hand as I lay sleepin in ignorance – she in a bed o hay, moontit like the horses! I struck McNab tae the dirt for all her insolence, an sic did she deser it.</p>
 
-                    <p>I should hae seen it, it wis lang by the first sign.&rdquo;</p>
+                            <p class="read-more-target">I should hae seen it, it wis lang by the first sign.&rdquo;</p>
 
-                    <p>&ldquo;To hear or read more checkout <i>Lallans</i> 93 or visit my substack where you'll find it in full along with a breakdown of its strengths and weaknesses.&rdquo;</p>
+                            <p class="read-more-target">&ldquo;To hear or read more checkout <i>Lallans</i> 93 or visit <a href="https://substack.com/@bymsmarshall">my substack</a> where you'll find it in full along with a breakdown of its strengths and weaknesses.&rdquo;</p>
+                        </div>
+                        <label for="read-more-toggle" class="read-more-trigger"></label>
                     </span>
                 </div>
             </div>
@@ -821,7 +906,7 @@
                 <a><span>When I Was Young</span></a>
                 <div>
                     <span class="transcript">
-                        <p>Presented here is an early version of When I Was Young, a single from The Peculiar&rsquo;s first EP. It was recorded in The Tragically Hip&rsquo;s Bathouse Studio and, among other contributions, features Mike on bass – early in his musical career.</p>
+                        <p>Presented here is an early version of When I Was Young, a single from The Peculiar&rsquo;s first EP. It was recorded in The Tragically Hip&rsquo;s Bathouse Studio and, among other contributions, features Mike on bass.</p>
                     </span>
                 </div>
             </div>

@@ -94,7 +94,13 @@ html, body {
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 a:hover {
-    filter: url(#glitchHover)
+    filter: none;
+}
+
+@media (hover: hover) {
+    a:hover {
+        filter: url(#glitchHover);
+    }
 }
 
 /* --- OVERLAYS (Z-Indexes) --- */
@@ -221,12 +227,23 @@ section {
 }
 
 .card:hover {
-  filter: url(#glitchHover);
+  filter: none;
   isolation: isolate;
 }
 
 .testimonial-section .card:hover {
-    filter: url(#glitchHover) grayscale(100);
+    filter: none;
+}
+
+@media (hover: hover) {
+    .card:hover {
+        filter: url(#glitchHover);
+        isolation: isolate;
+    }
+
+    .testimonial-section .card:hover {
+        filter: url(#glitchHover) grayscale(100);
+    }
 }
 
 .card p {
