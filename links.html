@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Links | by MM</title>
+    <link rel="stylesheet" href="styles.css">
+    <!--Favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/index2/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/index2/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/index2/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <!--Typefaces-->
+    <!--Self-Host
+    <link rel="preload" href="MangoGrotesque-Black.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="Estrella-Early.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="webfonts.css">-->
+    <!--3rd-Party-Host-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Outfit:wght@100..900&family=Pirata+One&family=Zalando+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <style>
+        /*Hero Poem Styles*/
+
+        @media (min-width: 1280px) {
+            .hero-section {
+                z-index: 201;
+            }
+
+            .hero-section.litMode {
+                z-index: 500
+            }
+            
+            #poetsTagline {
+                position: fixed;
+                top: 10%;
+                right: 5%;
+                width: 100%;
+                text-align: right;
+
+            }
+        }
+
+
+        .toggle {
+            opacity: 0;
+        }
+
+        .slider {
+            box-sizing: border-box;
+            border-radius: 100px;
+            border: 2px solid var(--main-color);
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--input-out-of-focus);
+            transition: 0.3s;
+        }
+
+        .slider:before {
+            content: "on";
+            box-sizing: border-box;
+            height: 30px;
+            width: 30px;
+            position: absolute;
+            left: 2px;
+            bottom: 1px;
+            border: 2px solid var(--main-color);
+            border-radius: 100px;
+            background-color: var(--bg-color);
+            color: var(--main-color);
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 25px;
+            transition: 0.3s;
+        }
+
+        .toggle:checked + .slider {
+            background-color: var(--input-focus);
+            transform: translateX(-32px);
+            border-radius: 0px;
+        }
+
+        .toggle:checked + .slider:before {
+            content: "off";
+            transform: translateX(32px);
+            border-radius: 0px;
+        }
+
+        /*Hero Styles*/
+
+        .hero-section {
+            height: unset;
+            min-height: 100vh;
+            margin-top: clamp(80px, 80px, 40px);
+        }
+
+            @media (min-width: 460px) {
+                .hero-section {
+                    margin-top: 0;
+                }
+           }
+
+        .hero-section .card {
+            user-select: none;
+        }
+
+        .hero-section .card > :nth-child(even) {
+            padding-top: calc((var(--type-ratio) * ((1.618) * 1)) * 1em);
+        }
+
+         .hero-section a {
+            text-decoration: underline;
+         }
+
+        .card:hover {
+            filter: none;
+        }
+
+         .hero-section a:hover {
+            filter: url(#glitchHover);
+         }
+
+        #heroType {
+            display: inline-block;
+            font: var(--h2-styles);
+            font-size: calc((var(--type-ratio) * 1.618) * 0.6em);
+            line-height: 0.8;
+            letter-spacing: var(--hed-letterspace);
+            margin-left: -4px;
+        }
+
+        @media (min-width:550px) {
+
+             .hero-section {
+                height: unset;
+                min-height: 100vh;
+            }
+
+            
+            #heroType {
+                font: var(--h2-styles);
+                line-height: 0.8;
+                letter-spacing: calc(var(--hero-letterspace) + 5px);
+            }
+            
+        }
+
+        .wordsBody {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+
+        .wordsBody > p {
+            margin-block-end: var(--block-margin);
+        }
+
+        .wordsBody > p:first-of-type {
+            margin-top: -20px;
+        }
+
+        .wordsBody p:last-of-type {
+            margin-block-end: 0;
+        }
+
+        .card > :nth-child(odd) {
+            flex-direction: column;
+        }
+
+        .footnote {
+            max-width: 600px;
+            margin: auto;
+            margin-top: 50px;
+            padding: 0px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            width: 90vw;
+            transition: 0.33s ease;
+            transform: var(--card-rotation);
+        }
+
+
+
+        @media (min-width: 1024px) {
+            .footnote {
+                width: 90%;
+            }
+        }
+
+        .footnote p {
+            background-color: var(--card-sub2);
+            font-size: calc(var(--fontBody-calc) - 2px);
+            border: var(--border-std);
+            color: var(--hed-colour);
+            padding: 5px;
+        }
+
+        .footnote p:last-of-type {
+            border-top: none;
+        }
+
+        .footnote.is-active {
+            transition: 0.33s ease;
+            transform-origin: top;
+            transform: translateY(-90%);
+        }
+
+        @media (min-width: 900px) {
+
+            .footnote.is-active {
+                transition: 0.33s ease;
+                transform-origin: right;
+                transform: translateY(0%);
+                transform: translateX(110%);
+            }
+        }
+
+        /*Publication List*/
+        .pubHed-section {
+            margin-top: 25dvh;
+            margin-bottom: 1.5rem;
+        }
+
+        .pubHed {
+            width: 90vw;
+            margin: auto;
+            cursor: default;
+        }
+
+        .pubHed.card > :nth-child(odd) {
+            padding: 0;
+            height: 0;
+        }
+
+        .work-section {
+            padding: unset;
+            position: relative;
+            top: unset;
+            left: unset;
+            transform: none;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            
+            margin-bottom: 25vh;
+        }
+
+        .work-stack {
+            user-select: contain;
+            margin: auto;
+        }
+        .work-stack a {
+            border: 1px solid var(--lcd-glow-color);
+            background-color: var(--bg-main);
+            box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.5); 
+            padding: 1.5rem 2rem;
+            max-width: 600px;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end;
+            font-family: var(--font-detail);
+            text-decoration: none;
+            width: 90%;
+        }
+
+        .work-stack a:hover {
+            /*width: 110%;*/
+            transform: scale(1.05);
+        }
+
+        a .work-item {
+            border: none;
+            background-color: none;
+            box-shadow: none; 
+            padding: 0;
+            width: 100%;
+            max-width: unset;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end;
+            font-family: inherit;
+            text-decoration: none;
+        }
+
+        a .work-info > h3 {
+            text-decoration: none;
+        }
+
+        a:visited .work-info > h3 {
+            color: var(--card-sub3);
+        }
+
+        /*Superscripts*/
+        sup {
+            vertical-align: baseline;
+            position: relative;
+            top: -0.4em;
+            line-height: 0;
+        }
+
+        time {
+            display: inline-block;
+            font-size: calc(var(--fontBody-calc) * 1.8);
+        }
+
+    </style>
+</head>
+<body id="glitchBody">
+    <!--<div class="dust-overlay" id="dust"></div>-->
+    <div class="dust-overlay"></div>
+    <div class="scanlines"></div>
+    <!--Pixelation Filter-->
+    <svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 0; height: 0; overflow: hidden;" viewBox="0 0 340 120">
+        <defs>
+            <filter id="glitchHover" primitiveUnits="objectBoundingBox" x="-10%" y="0%" width="120%" height="100%">
+            <feColorMatrix in="SourceGraphic" result="red" type="matrix" values="1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"/> 
+            <feColorMatrix in="SourceGraphic" result="green" type="matrix" values="0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0"/> 
+            <feColorMatrix in="SourceGraphic" result="blue" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0"/> 
+            <feOffset in="red" result="red-shifted" dx="-0.01" dy="0">
+                <animate attributeName="dx" keyTimes="0;0.2257;0.2354;0.2757;0.3492;0.5235;0.8075;1" values="0.0107;0.0237;0.0177;0.0275;0.0219;0.0035;0.0228;0.0107" begin="0" dur="8.7s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.2257;0.2354;0.2757;0.3492;0.5235;0.8075;1" values="0.0107;0.0237;0.0177;0.0275;0.0219;0.0035;0.0228;0.0107" begin="0" dur="8.7s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blue" result="blue-shifted" dx="0.01" dy="0">
+                <animate attributeName="dx" keyTimes="0;0.2647;0.5423;0.5841;0.5883;0.7501;0.8890;1" values="0.0184;0.0126;0.0250;0.0207;0.0016;0.0149;0.0090;0.0251" begin="0" dur="9.57s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.2647;0.5423;0.5841;0.5883;0.7501;0.8890;1" values="0.0184;0.0126;0.0250;0.0207;0.0016;0.0149;0.0090;0.0251" begin="0" dur="9.57s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feBlend mode="screen" in="red-shifted" in2="green" result="red-green"/>
+            <feBlend mode="screen" in="red-green" in2="blue-shifted" result="blended"/>
+            <feOffset in="blended" dx="0" dy="0" y="0%" height="6%" result="slice_0">
+                <animate attributeName="dx" keyTimes="0;0.3533;0.3945;0.4778;0.8412;0.9118;0.9762;1" values="0.0023;0.0088;0.0108;0.0125;0.0092;0.0127;0.0027;0.0084" begin="0s" dur="1.6355s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.3533;0.3945;0.4778;0.8412;0.9118;0.9762;1" values="0.0023;0.0088;0.0108;0.0125;0.0092;0.0127;0.0027;0.0084" begin="0s" dur="1.6355s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="6%" height="26%" result="slice_1">
+                <animate attributeName="dx" keyTimes="0;0.3160;0.6768;0.6928;0.8076;0.8811;0.9672;1" values="0.0079;0.0074;0.0107;0.0033;0.0119;0.0067;0.0070;0.0073" begin="0s" dur="1.7493s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.3160;0.6768;0.6928;0.8076;0.8811;0.9672;1" values="0.0079;0.0074;0.0107;0.0033;0.0119;0.0067;0.0070;0.0073" begin="0s" dur="1.7493s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="32%" height="10%" result="slice_2">
+                <animate attributeName="dx" keyTimes="0;0.1164;0.3560;0.7653;0.8200;0.9080;0.9235;1" values="0.0031;0.0011;0.0095;0.0030;0.0021;0.0125;0.0110;0.0073" begin="0s" dur="1.4082s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.1164;0.3560;0.7653;0.8200;0.9080;0.9235;1" values="0.0031;0.0011;0.0095;0.0030;0.0021;0.0125;0.0110;0.0073" begin="0s" dur="1.4082s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="42%" height="8%" result="slice_3">
+                <animate attributeName="dx" keyTimes="0;0.1791;0.2069;0.4204;0.4373;0.7437;0.9224;1" values="0.0123;0.0105;0.0120;0.0053;0.0067;0.0083;0.0038;0.0095" begin="0s" dur="1.1282s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.1791;0.2069;0.4204;0.4373;0.7437;0.9224;1" values="0.0123;0.0105;0.0120;0.0053;0.0067;0.0083;0.0038;0.0095" begin="0s" dur="1.1282s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="50%" height="6%" result="slice_4">
+                <animate attributeName="dx" keyTimes="0;0.2204;0.2582;0.2633;0.3458;0.5244;0.5397;1" values="0.0031;0.0065;0.0072;0.0087;0.0090;0.0014;0.0013;0.0067" begin="0s" dur="1.3618s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.2204;0.2582;0.2633;0.3458;0.5244;0.5397;1" values="0.0031;0.0065;0.0072;0.0087;0.0090;0.0014;0.0013;0.0067" begin="0s" dur="1.3618s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="56%" height="11%" result="slice_5">
+                <animate attributeName="dx" keyTimes="0;0.1968;0.3354;0.4156;0.4548;0.7475;0.8383;1" values="0.0068;0.0071;0.0097;0.0130;0.0119;0.0072;0.0050;0.0088" begin="0s" dur="1.5411s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.1968;0.3354;0.4156;0.4548;0.7475;0.8383;1" values="0.0068;0.0071;0.0097;0.0130;0.0119;0.0072;0.0050;0.0088" begin="0s" dur="1.5411s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="67%" height="13%" result="slice_6">
+                <animate attributeName="dx" keyTimes="0;0.0887;0.2142;0.4857;0.6041;0.7496;0.9835;1" values="0.0085;0.0071;0.0051;0.0128;0.0093;0.0123;0.0091;0.0074" begin="0s" dur="1.388s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.0887;0.2142;0.4857;0.6041;0.7496;0.9835;1" values="0.0085;0.0071;0.0051;0.0128;0.0093;0.0123;0.0091;0.0074" begin="0s" dur="1.388s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feOffset in="blended" dx="0" dy="0" y="80%" height="20%" result="slice_7">
+                <animate attributeName="dx" keyTimes="0;0.2669;0.5160;0.6021;0.7034;0.7622;0.9087;1" values="0.0124;0.0025;0.0119;0.0012;0.0105;0.0120;0.0037;0.0011" begin="0s" dur="1.4736s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                <animate attributeName="dy" keyTimes="0;0.2669;0.5160;0.6021;0.7034;0.7622;0.9087;1" values="0.0124;0.0025;0.0119;0.0012;0.0105;0.0120;0.0037;0.0011" begin="0s" dur="1.4736s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+            </feOffset>
+            <feMerge>
+                <feMergeNode in="slice_0"/><feMergeNode in="slice_1"/><feMergeNode in="slice_2"/><feMergeNode in="slice_3"/><feMergeNode in="slice_4"/><feMergeNode in="slice_5"/><feMergeNode in="slice_6"/><feMergeNode in="slice_7"/>
+            </feMerge>
+            </filter>
+        </defs>
+        </svg>
+    </div>
+    <div class="scroll-container">
+        <section class="section-above pubHed-section ink-container">
+            <div class="card pubHed">
+            <div></div>
+                <a><span>@bymsmarshall</span></a>
+                <div></div>
+            </div>
+        </section>
+
+        <section class="section-above work-section ink-container">
+            <div class="work-stack" id="lcd-screen">
+                <a href="https://bymichaelmarshall.darkroom.com/">
+                    <div class="work-item">
+                        <div class="work-info">
+                            <h3 class="hero-anim">Prints</h3>
+                            <span><i></i></span>
+                        </div>
+                        <time>☞</time>
+                    </div>
+                </a>
+                <a href="index">
+                    <div class="work-item">
+                        <div class="work-info">
+                            <h3 class="hero-anim">Site</h3>
+                            <span><i></i></span>
+                        </div>
+                        <time>☞</time>
+                    </div>
+                </a>
+                <a href="https://substack.com/@bymsmarshall">
+                    <div class="work-item">
+                        <div class="work-info">
+                            <h3 class="hero-anim">Substack</h3>
+                            <span><i></i></span>
+                        </div>
+                        <time>☞</time>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <footer class="section-above main-footer">
+            <div class="footer-id">
+                <p>M.S. Marshall</p>
+                <p>@bymsmarshall</p>
+                <div class="social-links">
+                    <a href="mailto:getintouch@bymichaelmarshall.com">Email</a>
+                    <a href="https://instagram.com/bymsmarshall">Instagram</a>
+                    <a href="https://substack.com/@bymsmarshall">Substack</a>
+                </div>
+            </div>
+            <div class="footer-legal">
+                <a href="/terms">Terms & Privacy</a>
+                <p>© <span id="year"></span> All Rights Reserved</p>
+            </div>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
