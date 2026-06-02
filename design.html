@@ -51,7 +51,7 @@
             text-transform: none;
             border: 1px solid var(--lcd-glow-color);
             box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.5); 
-            padding: 1.5rem 2rem;
+            padding: 1.5rem 1rem;
             font: var(--font-body);
             font-family: var(--hed-type);
             font-weight: 900;
@@ -68,6 +68,8 @@
             -moz-user-select: none;
             -ms-user-select: none;
         }
+
+        
 
         .hero-fade {
             display: block;
@@ -88,6 +90,17 @@
             font: var(--font-body);
             text-transform: none;
             letter-spacing: initial;
+            margin-top: var(--block-margin);
+        }
+
+        @media  (min-width: 580px) {
+             .hero-title {
+                padding: 1.5rem 2rem;
+             }
+
+            .hero-title > span {
+                margin-top: 0px;
+            }
         }
 
         .hero-section p {
@@ -464,13 +477,20 @@
             .contextCard {
                 max-width: 90vw;
             }
-        
+            .contextCard h2 {
+                display: block;
+                width: 0px;
+            }
         }
         
-        @media screen and (min-width: 718px) {
+        @media screen and (min-width: 622px) {
+            .contextCard h2 {
+                padding: 0;
+            }
+
             .contextCard p {
                 padding-top: calc(var(--p-padding-top) * 2);
-                padding-bottom: calc(var(--p-padding-top) * 2)
+                padding-bottom: calc(var(--p-padding-top) * 2);
             }
         }
     </style>
@@ -556,7 +576,7 @@
             </filter> 
         </svg>
     <div class="scroll-container">
-            <h1 class="hero-title">What&rsquo;s the Point of You?<br><span>Existentialist design in an emphemeral age.</span></h1>
+            <h1 class="hero-title">What&rsquo;s the Point&nbsp;of You?<br><span>Existentialist design in an emphemeral age.</span></h1>
         <section class="section-behind hero-section" id="lcd-screen">
                     <!--Maclean's-->
                     <svg class="floating-logo" viewBox="0 0 126 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1356,7 +1376,8 @@
                 <div class="contextBlock">
                     <div class="contextCard">
                         <h2>Art</h2>
-                        <p>There’s an important distinction between art and design – purpose. The AlternateUniversePR project straddles that boundary. Demonstrated here on Seoul's subway network, the posters are intended to be quizzical and confounding, offering snippets of authors and artists’ words that conjure up other worlds and commentary on our own. Even the name, &lsquo;Alternate,&rsquo; is played against its more appropriate counterpart, &lsquo;Alternative,&rsquo; to ask viewers how their realities are defined or eclipsed.</p>
+                        <p>There’s an important distinction between art and design – purpose. The AlternateUniversePR project straddles that boundary. Demonstrated here on Seoul's subway network, the posters are intended to be quizzical and confounding, offering snippets of authors and artists’ words that conjure up other worlds and commentary on our own. Even the name, &lsquo;Alternate,&rsquo; is played against its more appropriate counterpart, &lsquo;Alternative,&rsquo; to ask viewers how their realities are defined or eclipsed.<br>
+                        <br>Some of these posters and other prints are available on <a href="https://bymichaelmarshall.darkroom.com/">Mike&rsquo;s darkroom page</a>.</p>
                     </div>
                 </div>
             </div>
