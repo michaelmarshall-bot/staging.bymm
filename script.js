@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const svg = document.getElementById('tapeMachine');
 
     if (audio && svg) {
-        let audioCtx, analyser, dataArray, source, animationFrameId;
+        let audioCtx, analyser, dataArray, source, animationFrameId, gainNode;
         let tapeStartTime = null, pausedTimeOffset = 0;
         const tapeLoopDuration = 5000;
 
@@ -192,16 +192,19 @@ document.addEventListener('DOMContentLoaded', () => {
             duration: document.getElementById('duration'), // Reference to the duration span
             trackTitle: document.getElementById('track-title')
         };
-
+        
         const initAudio = () => {
             if (audioCtx) return; 
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             analyser = audioCtx.createAnalyser();
+            gainNode = audioCtx.createGain();
             source = audioCtx.createMediaElementSource(audio);
             source.connect(analyser);
-            analyser.connect(audioCtx.destination);
+            analyser.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
             analyser.fftSize = 64; 
             dataArray = new Uint8Array(analyser.frequencyBinCount);
+            if (ui.vol) gainNode.gain.value = parseFloat(ui.vol.value);
         };
 
         const randomizeHardware = () => {
@@ -350,7 +353,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ui.skipBtn?.addEventListener('click', () => { globalTrackIndex = loadTrack(globalTrackIndex + 1); });
         ui.prevBtn?.addEventListener('click', () => { globalTrackIndex = loadTrack(globalTrackIndex - 1); });
-        if (ui.vol) ui.vol.addEventListener('input', (e) => audio.volume = e.target.value);
+        if (ui.vol) {
+            ui.vol.addEventListener('input', (e) => {
+                const val = parseFloat(e.target.value);
+                
+                audio.volume = val; 
+                
+                // Safari Web Audio API fix
+                if (gainNode) {
+                    gainNode.gain.setTargetAtTime(val, audioCtx.currentTime, 0.01);
+                }
+            });
+        }
         if (ui.progress) {
             ui.progress.addEventListener('input', (e) => {
                 // Ensure duration exists before trying to calculate
