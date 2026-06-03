@@ -256,48 +256,81 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!trackItems.length) return 0;
             let targetIndex = (index + trackItems.length) % trackItems.length;
             const item = trackItems[targetIndex];
-            audio.src = item.getAttribute('data-src');
+            const grabbedSrc = item.getAttribute('data-src');
+            
+            console.log("Attempting to load source:", grabbedSrc); // <--- ADD THIS
+
+            // 1. Initialize and wake up the AudioContext synchronously during the click
+            initAudio();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            // 2. Set the source and explicitly tell the browser to load it
+            audio.src = grabbedSrc;
+            
+            audio.load(); 
+
             if (ui.trackTitle) ui.trackTitle.innerText = item.innerText;
             trackItems.forEach(li => li.classList.remove('active'));
             item.classList.add('active');
             tapeStartTime = null; pausedTimeOffset = 0;
+            
             if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            
             audio.play().then(() => {
-                initAudio();
                 // Update duration when loading a new track via click or skip
                 if (ui.duration) ui.duration.textContent = formatTime(audio.duration);
                 if (ui.playIcon) ui.playIcon.className = 'pause-icon';
                 machine.playBtnsSVG.forEach(b => b?.classList.add('btn-pressed'));
                 if (machine.tapeTab) machine.tapeTab.style.opacity = "1";
+                
+                // Original animation logic triggers here
                 animationFrameId = requestAnimationFrame(animate);
                 randomizeHardware();
-            }).catch(() => {});
+            }).catch((err) => {
+                console.warn("Playback prevented by browser:", err); 
+            });
+            
             return targetIndex;
         };
 
         let globalTrackIndex = 0;
-        ui.playBtn?.addEventListener('click', () => {
+        
+        ui.playBtn?.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!audio.getAttribute('src')) {
+                globalTrackIndex = loadTrack(0);
+                return; 
+            }
+
             if (audio.paused) {
                 initAudio();
                 
-                // FIX: Sync title if it's still default
+                // Safari safety guard: wake up the audio context if it was suspended
+                if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                
+                // Sync title if it's still default
                 if (ui.trackTitle && ui.trackTitle.innerText === 'SELECT A TRACK') {
                     const activeItem = document.querySelector('.track-item.active');
                     if (activeItem) ui.trackTitle.innerText = activeItem.innerText;
                 }
 
-                // FIX: Sync duration immediately if metadata is already loaded
+                // Sync duration immediately if metadata is already loaded
                 if (ui.duration && audio.duration) {
                     ui.duration.textContent = formatTime(audio.duration);
                 }
                 
+                // Catch the promise to prevent silent console failures
                 audio.play().then(() => {
                     if (machine.tapeTab) machine.tapeTab.style.opacity = "1";
                     ui.playIcon.className = 'pause-icon';
                     machine.playBtnsSVG.forEach(b => b?.classList.add('btn-pressed'));
                     randomizeHardware();
                     animationFrameId = requestAnimationFrame(animate);
-                });
+                }).catch(e => console.log("Playback prevented:", e));
             } else {
                 audio.pause();
                 ui.playIcon.className = 'play-icon';
@@ -318,6 +351,14 @@ document.addEventListener('DOMContentLoaded', () => {
         ui.skipBtn?.addEventListener('click', () => { globalTrackIndex = loadTrack(globalTrackIndex + 1); });
         ui.prevBtn?.addEventListener('click', () => { globalTrackIndex = loadTrack(globalTrackIndex - 1); });
         if (ui.vol) ui.vol.addEventListener('input', (e) => audio.volume = e.target.value);
+        if (ui.progress) {
+            ui.progress.addEventListener('input', (e) => {
+                // Ensure duration exists before trying to calculate
+                if (audio.duration) {
+                    audio.currentTime = (e.target.value / 100) * audio.duration;
+                }
+            });
+        }
 
         // Metadata listener for tracks that haven't loaded yet
         audio.addEventListener('loadedmetadata', () => {

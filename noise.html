@@ -115,6 +115,58 @@
 
 /* Audio Player */
 
+        /* Strip default Safari styling from the input container */
+        input[type="range"] {
+            -webkit-appearance: none; 
+            width: 100%;
+            background: transparent;
+        }
+
+        /* Strip default styling from the thumb (the draggable part) */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+        }
+
+        /* Strip default styling from the track */
+        input[type="range"]::-webkit-slider-runnable-track {
+            -webkit-appearance: none;
+            /* Add your custom track styles below */
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 0px;
+        }
+
+            /* Firefox */
+        input[type="range"]::-moz-range-track {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 0px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--tape-color);
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            margin-top: -6px; /* Calculation: (track height / 2) - (thumb height / 2) */
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Firefox */
+        input[type="range"]::-moz-range-thumb {
+            background: var(--tape-color);
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            border: none; /* Removes default Firefox border */
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
         .audio-card {
             padding: var(--block-margin);
             margin-top: unset;
@@ -813,7 +865,7 @@
 
                     <div class="track-list-container">
                         <ul id="playlist">
-                            <li class="track-item active" data-src="assets/audio/portfolioIntro-V1.mp3">01. Introduction ⊙</li>
+                            <li class="track-item active" data-src="./assets/audio/portfolioIntro-V1.mp3">01. Introduction ⊙</li>
                             <li class="track-item" data-src="assets/audio/TasmanianDevil-VO-Tease.mp3">02. Tasmanian Devil | Narration</li>
                             <li class="track-item" data-src="assets/audio/harrysReel-DEMO.mp3">03. Harry's Reel | RWL Demo</li>
                             <li class="track-item" data-src="assets/audio/poached-RWLDemo.mp3">04. Poached | RWL Demo</li>
