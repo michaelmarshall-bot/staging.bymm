@@ -91,7 +91,7 @@
             position: absolute;
             inset: 0;
             background: linear-gradient(180deg, rgba(0, 0, 0, 0) 100vh, var(--bg-main) 25%, var(--bg-main) 100%);
-            filter: url(#pixelNoise);
+            /*filter: url(#pixelNoise);*/
         }
 
         .hero-title > span {
@@ -562,7 +562,7 @@
                 </filter>
             </defs>
         </svg>
-        <svg style="position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none;" aria-hidden="true">
+        <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
             <filter id="pixelNoise" x="0" y="0">
                 <!-- Block -->
                 <feFlood x="4" y="4" height="1" width="1"/>
