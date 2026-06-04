@@ -45,13 +45,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const style = window.getComputedStyle(slider);
         const isReverse = style.flexDirection === 'row-reverse' || style.direction === 'rtl';
-        const directionMultiplier = isReverse ? -1 : 1;
+        
+        // Remove directionMultiplier from here, we handle it more dynamically below
 
         const updateArrows = () => {
-            const scrollLeft = slider.scrollLeft;
+            // Safari uses negative scrollLeft for row-reverse/rtl, Chrome doesn't always. 
+            // Math.abs standardizes it so both browsers give a positive distance.
+            const scrollLeft = Math.abs(slider.scrollLeft); 
             const maxScroll = slider.scrollWidth - slider.clientWidth;
-            const isAtStart = isReverse ? Math.abs(scrollLeft) <= 10 : scrollLeft <= 10;
-            const isAtEnd = isReverse ? Math.abs(scrollLeft) >= maxScroll - 10 : scrollLeft >= maxScroll - 10;
+            
+            // Now that scrollLeft is always a positive distance from start, 
+            // the logic is identical for both standard and reversed sliders.
+            const isAtStart = scrollLeft <= 10;
+            const isAtEnd = scrollLeft >= maxScroll - 10;
 
             prevBtn.classList.toggle('is-hidden', isAtStart);
             nextBtn.classList.toggle('is-hidden', isAtEnd);
@@ -78,22 +84,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
         slider.addEventListener('mouseleave', stopDragging);
         slider.addEventListener('mouseup', stopDragging);
+        
         slider.addEventListener('mousemove', (e) => {
             if (!isDown) return;
             e.preventDefault();
             const x = e.pageX - slider.offsetLeft;
-            const walk = (x - startX) * 2 * directionMultiplier; 
-            slider.scrollLeft = scrollLeftState - walk;
+            // The magic fix for drag: Only invert the drag logic if it's reversed. 
+            // But don't multiply by a persistent -1 state, calculate it raw.
+            const walk = (x - startX) * 2; 
+            
+            if(isReverse) {
+                // Safari reverse logic check
+                 slider.scrollLeft = scrollLeftState + walk;
+            } else {
+                 slider.scrollLeft = scrollLeftState - walk;
+            }
         });
 
         nextBtn.addEventListener('click', () => {
             const slide = slider.querySelector('.slide');
-            if (slide) slider.scrollBy({ left: slide.offsetWidth * directionMultiplier, behavior: 'smooth' });
+            if (!slide) return;
+            
+            // Safari reverse logic check for clicking
+            if (isReverse) {
+                slider.scrollBy({ left: -slide.offsetWidth, behavior: 'smooth' });
+            } else {
+                slider.scrollBy({ left: slide.offsetWidth, behavior: 'smooth' });
+            }
         });
 
         prevBtn.addEventListener('click', () => {
             const slide = slider.querySelector('.slide');
-            if (slide) slider.scrollBy({ left: -slide.offsetWidth * directionMultiplier, behavior: 'smooth' });
+            if (!slide) return;
+            
+            // Safari reverse logic check for clicking
+            if (isReverse) {
+                slider.scrollBy({ left: slide.offsetWidth, behavior: 'smooth' });
+            } else {
+                slider.scrollBy({ left: -slide.offsetWidth, behavior: 'smooth' });
+            }
         });
     });
 
