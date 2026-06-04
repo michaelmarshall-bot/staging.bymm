@@ -275,6 +275,15 @@
             .testimonial-section {
                 padding: 10vh 0;
             }
+
+            .slider-container {
+                display: flex;
+                flex-direction: row; /* Force all rows to standard left-to-right */
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
+            }
             
             .mockTitle h2 {   
                 text-align: left;
@@ -282,57 +291,6 @@
                 padding: calc(((var(--type-ratio) * (1.618 * 3))) * 1rem) 0.2rem 0.2rem 0.2rem;
             }
 
-            /*Next two classes combine to ensure JS direction switch is seamless*/
-            .testimonial-wrapper:nth-child(even) .slider-container {
-                flex-direction: row-reverse;
-            }
-
-            .testimonial-wrapper:nth-child(even) .slider-track {
-                flex-direction: inherit;
-            }
-
-            .testimonial-wrapper:nth-child(even) h2 {
-                justify-content: flex-end;
-            }
-
-            .testimonial-wrapper:nth-child(even) h2 > span:nth-of-type(1) {
-                display: inline;
-                -webkit-transform: scaleX(-1);
-                transform: scaleX(-1);
-            }
-
-            .testimonial-wrapper:nth-child(even) h2 > span:nth-of-type(2) {
-                display: none;
-                -webkit-transform: none;
-                transform: none;
-            }
-
-            .testimonial-wrapper:nth-child(even) .slideArrow {
-                flex-direction: row-reverse;
-                transform: translateY(-50%) scale(1) scaleX(-1);
-            }
-
-            .testimonial-wrapper:nth-child(even) .slideArrow:hover {
-                transform: translateY(-50%) scale(1.2) scaleX(-1);
-                filter: url(#glitchHover);
-            }
-
-            .testimonial-wrapper:nth-child(even):has(h2:hover) .slideArrow {
-                transform: translateY(-50%) scale(1.2) scaleX(-1);
-                filter: url(#glitchHover);
-            }
-            .testimonial-wrapper:nth-child(even):has(.card:hover) .slideArrow {
-                transform: translateY(-50%) scale(1.2) scaleX(-1);
-                filter: url(#glitchHover);
-            }
-
-            .testimonial-wrapper:nth-child(even) .slideArrow.next {
-                    right: 98vw;
-            }
-
-            .testimonial-wrapper:nth-child(even) .slideArrow.prev {
-                    left: 98vw;
-            }
         }
 
         @media (min-width: 1024px) {
@@ -341,32 +299,9 @@
                 scroll-padding: 0 0vw;
             }
 
-            .testimonial-wrapper:nth-child(even) .slideArrow.next {
-                right: calc(95% - 10px);
-            }
-
-            .testimonial-wrapper:nth-child(even) .slideArrow.prev {
-                left: calc(95% - 10px);
-            }
-
             .mockTitle h2 {
                 display: flex;
             }
-        }
-
-        .testimonial-section .card > :nth-child(even) {
-            background-color: inherit;
-            border-radius: 0px;
-            display: inline-block;
-            align-self: center;
-            text-align: var(--type-align);
-            letter-spacing: var(--hed-letterspace);
-            margin-inline-start: 0px;
-            padding: 10px;
-            font: var(--h2-styles);
-            text-transform: var(--h1-transform);
-            z-index: 3;
-            width: 100%;
         }
         
         .testimonial-section .card > :nth-child(3) {

@@ -36,20 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Testimonial Slider ---
-        // Runs once on load to determine how the current browser calculates reversed layouts
-    const reverseScrollEngine = (() => {
-        const dummy = document.createElement('div');
-        dummy.style.cssText = 'width: 10px; height: 10px; overflow-x: scroll; display: flex; flex-direction: row-reverse; visibility: hidden; position: absolute; top: -9999px;';
-        dummy.innerHTML = '<div style="width: 20px; height: 10px;"></div>';
-        document.body.appendChild(dummy);
-        
-        // If the browser starts reversed scrolls with a positive value, it's Safari's engine
-        const isSafariMath = dummy.scrollLeft > 0;
-        dummy.remove();
-        
-        return isSafariMath ? 'safari' : 'chrome';
-    })();
-
     document.querySelectorAll('.testimonial-wrapper').forEach((wrapper) => {
         const slider = wrapper.querySelector('.slider-container');
         const nextBtn = wrapper.querySelector('.slideArrow.next');
@@ -57,38 +43,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!slider || !nextBtn || !prevBtn) return;
 
-        const style = window.getComputedStyle(slider);
-        const isReverse = style.flexDirection === 'row-reverse' || style.direction === 'rtl';
-
         const updateArrows = () => {
-            const scrollLeft = slider.scrollLeft;
-            const maxScroll = Math.round(slider.scrollWidth - slider.clientWidth);
-            
-            let isAtStart = false;
-            let isAtEnd = false;
+            // Guard clause: Do not manipulate classes on mobile viewports
+            if (window.innerWidth < 640) return;
 
-            if (!isReverse) {
-                // Standard LTR Math
-                isAtStart = scrollLeft <= 10;
-                isAtEnd = scrollLeft >= maxScroll - 10;
-            } else {
-                // Reversed Math (Dynamically routed based on engine feature detection)
-                if (reverseScrollEngine === 'safari') {
-                    isAtStart = scrollLeft >= maxScroll - 10;
-                    isAtEnd = scrollLeft <= 10;
-                } else {
-                    isAtStart = scrollLeft >= -10;
-                    isAtEnd = scrollLeft <= -maxScroll + 10;
-                }
-            }
+            const scrollLeft = slider.scrollLeft;
+            const maxScroll = slider.scrollWidth - slider.clientWidth;
+
+            // Clean, standard boundary checks
+            const isAtStart = scrollLeft <= 10;
+            const isAtEnd = scrollLeft >= maxScroll - 10;
 
             prevBtn.classList.toggle('is-hidden', isAtStart);
             nextBtn.classList.toggle('is-hidden', isAtEnd);
         };
 
+        // Scroll and resize listeners
         slider.addEventListener('scroll', updateArrows);
+        window.addEventListener('resize', updateArrows);
         setTimeout(updateArrows, 50);
 
+        // Standard Drag Logic
         let isDown = false, startX, scrollLeftState;
 
         slider.addEventListener('mousedown', (e) => {
@@ -113,16 +88,10 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const x = e.pageX - slider.offsetLeft;
             const walk = (x - startX) * 2; 
-            
-            // Universal drag physics: reversed rows add the delta, standard rows subtract it
-            if (isReverse) {
-                slider.scrollLeft = scrollLeftState + walk;
-            } else {
-                slider.scrollLeft = scrollLeftState - walk;
-            }
+            slider.scrollLeft = scrollLeftState - walk; // Standard subtraction for LTR layout
         });
 
-        // Safari scroll-snap bypass for programmatic scrolling
+        // Clean Programmatic Scroll (Bypasses WebKit scroll-snap bugs)
         const smoothScroll = (amount) => {
             slider.style.scrollSnapType = 'none';
             slider.scrollBy({ left: amount, behavior: 'smooth' });
@@ -133,15 +102,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         nextBtn.addEventListener('click', () => {
             const slide = slider.querySelector('.slide');
-            if (!slide) return;
-            // Both engines require a negative amount to scroll visually leftwards in a reversed container
-            smoothScroll(isReverse ? -slide.offsetWidth : slide.offsetWidth);
+            if (slide) smoothScroll(slide.offsetWidth);
         });
 
         prevBtn.addEventListener('click', () => {
             const slide = slider.querySelector('.slide');
-            if (!slide) return;
-            smoothScroll(isReverse ? slide.offsetWidth : -slide.offsetWidth);
+            if (slide) smoothScroll(-slide.offsetWidth);
         });
     });
 
