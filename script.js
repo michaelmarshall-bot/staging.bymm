@@ -149,249 +149,273 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- NOISE PAGE ENGINE ---
     const audio = document.getElementById('audio-player');
-    const svg = document.getElementById('tapeMachine');
+const svg = document.getElementById('tapeMachine');
 
-    if (audio && svg) {
-        let audioCtx, analyser, dataArray, source, animationFrameId, gainNode;
-        let tapeStartTime = null, pausedTimeOffset = 0;
-        const tapeLoopDuration = 5000;
+if (audio && svg) {
+    let audioCtx, analyser, dataArray, source, animationFrameId, gainNode;
+    let tapeStartTime = null, pausedTimeOffset = 0;
+    const tapeLoopDuration = 5000;
 
-        // Helper to format seconds into M:SS
-        const formatTime = (seconds) => {
-            if (isNaN(seconds) || seconds === Infinity) return "0:00";
-            const m = Math.floor(seconds / 60);
-            const s = Math.floor(seconds % 60);
-            return `${m}:${s < 10 ? '0' : ''}${s}`;
-        };
+    // Helper to format seconds into M:SS
+    const formatTime = (seconds) => {
+        if (isNaN(seconds) || seconds === Infinity) return "0:00";
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m}:${s < 10 ? '0' : ''}${s}`;
+    };
 
-        const machine = {
-            path: svg.querySelector('#Tape'),
-            tapeTab: svg.querySelector('#tapeTab'),
-            meterL: svg.querySelector('#meterLeft'),
-            meterR: svg.querySelector('#meterRight'),
-            playBtnsSVG: ['button5', 'button10', 'button12', 'button14'].map(id => svg.querySelector(`#${id}`)),
-            faders: Array.from({length: 7}, (_, i) => svg.querySelector(`#fader${i + 1}`)),
-            knobs: ['smknob1', 'smknob2', 'smknob3', 'smknob4', 'knob1', 'knob2'].map(id => svg.querySelector(`#${id}`))
-        };
+    // progress bar
+    const updateProgressBarVisual = () => {
+        if (!ui.progress) return;
+        const pct = ui.progress.value || 0;
+        ui.progress.style.background = `linear-gradient(to right, var(--tape-color, #00ff00) ${pct}%, var(--slider-bar-color, #222) ${pct}%)`;
+    };
 
-        const spools = {
-            anti: ['tape1', 'tape2', 'supplyReel', 'spool1', 'spool5'].map(id => svg.querySelector(`#${id}`)),
-            clock: ['spool2', 'spool3', 'spool4'].map(id => svg.querySelector(`#${id}`)),
-            takeup: svg.querySelector('#takeupReel')
-        };
+    const machine = {
+        path: svg.querySelector('#Tape'),
+        tapeTab: svg.querySelector('#tapeTab'),
+        meterL: svg.querySelector('#meterLeft'),
+        meterR: svg.querySelector('#meterRight'),
+        playBtnsSVG: ['button5', 'button10', 'button12', 'button14'].map(id => svg.querySelector(`#${id}`)),
+        faders: Array.from({length: 7}, (_, i) => svg.querySelector(`#fader${i + 1}`)),
+        knobs: ['smknob1', 'smknob2', 'smknob3', 'smknob4', 'knob1', 'knob2'].map(id => svg.querySelector(`#${id}`))
+    };
 
-        const ui = {
-            playBtn: document.getElementById('play-pause-btn'),
-            stopBtn: document.getElementById('stop-btn'),
-            skipBtn: document.getElementById('next-btn'),
-            prevBtn: document.getElementById('prev-btn'),
-            vol: document.getElementById('volume-slider'),
-            progress: document.getElementById('progress-bar'),
-            playIcon: document.getElementById('play-icon'),
-            current: document.getElementById('current-time'),
-            duration: document.getElementById('duration'), // Reference to the duration span
-            trackTitle: document.getElementById('track-title')
-        };
+    const spools = {
+        anti: ['tape1', 'tape2', 'supplyReel', 'spool1', 'spool5'].map(id => svg.querySelector(`#${id}`)),
+        clock: ['spool2', 'spool3', 'spool4'].map(id => svg.querySelector(`#${id}`)),
+        takeup: svg.querySelector('#takeupReel')
+    };
+
+    const ui = {
+        playBtn: document.getElementById('play-pause-btn'),
+        stopBtn: document.getElementById('stop-btn'),
+        skipBtn: document.getElementById('next-btn'),
+        prevBtn: document.getElementById('prev-btn'),
+        vol: document.getElementById('volume-slider'),
+        progress: document.getElementById('progress-bar'),
+        playIcon: document.getElementById('play-icon'),
+        current: document.getElementById('current-time'),
+        duration: document.getElementById('duration'), 
+        trackTitle: document.getElementById('track-title')
+    };
+    
+    const initAudio = () => {
+        if (audioCtx) return; 
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioCtx.createAnalyser();
+        gainNode = audioCtx.createGain();
+        source = audioCtx.createMediaElementSource(audio);
         
-        const initAudio = () => {
-            if (audioCtx) return; 
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            analyser = audioCtx.createAnalyser();
-            gainNode = audioCtx.createGain();
-            source = audioCtx.createMediaElementSource(audio);
-            source.connect(analyser);
-            analyser.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            analyser.fftSize = 64; 
-            dataArray = new Uint8Array(analyser.frequencyBinCount);
-            if (ui.vol) gainNode.gain.value = parseFloat(ui.vol.value);
-        };
-
-        const randomizeHardware = () => {
-            machine.knobs.forEach(k => k && (k.style.transform = `rotate(${Math.round(Math.random() * 160 - 80)}deg)`));
-            machine.faders.forEach(f => f && (f.style.transform = `translateY(-${(Math.random() * 53.6).toFixed(2)}px)`));
-        };
-
-        const resetHardware = (fullStop = false) => {
-            machine.faders.forEach(f => f && (f.style.transform = `translateY(0)`));
-            machine.playBtnsSVG.forEach(b => b?.classList.remove('btn-pressed'));
-            if (fullStop && machine.meterL && machine.meterR) {
-                machine.meterL.style.transform = `rotate(90deg)`;
-                machine.meterR.style.transform = `rotate(300deg)`;
+        source.connect(analyser);
+        analyser.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        analyser.fftSize = 64; 
+        dataArray = new Uint8Array(analyser.frequencyBinCount);
+        
+        // SAFARI FIX: Safely assign volume exclusively to the Web Audio Graph. 
+        // Do NOT assign audio.volume here; let Safari stream uninhibited into the context.
+        if (ui.vol) {
+            const rawVol = parseFloat(ui.vol.value);
+            if (!isNaN(rawVol)) {
+                gainNode.gain.value = rawVol > 1 ? rawVol / 100 : rawVol;
             }
-        };
+        }
+    };
 
-        const animate = (currentTime) => {
-            if (audio.paused) return;
+    const randomizeHardware = () => {
+        machine.knobs.forEach(k => k && (k.style.transform = `rotate(${Math.round(Math.random() * 160 - 80)}deg)`));
+        machine.faders.forEach(f => f && (f.style.transform = `translateY(-${(Math.random() * 53.6).toFixed(2)}px)`));
+    };
 
-            if (!tapeStartTime) tapeStartTime = currentTime - pausedTimeOffset;
-            const elapsed = currentTime - tapeStartTime;
-            const progress = (elapsed % tapeLoopDuration) / tapeLoopDuration;
-            const rot = (elapsed / 20) % 360; 
+    const resetHardware = (fullStop = false) => {
+        machine.faders.forEach(f => f && (f.style.transform = `translateY(0)`));
+        machine.playBtnsSVG.forEach(b => b?.classList.remove('btn-pressed'));
+        if (fullStop && machine.meterL && machine.meterR) {
+            machine.meterL.style.transform = `rotate(90deg)`;
+            machine.meterR.style.transform = `rotate(300deg)`;
+        }
+    };
 
-            spools.anti.forEach(el => el && (el.style.transform = `rotate(-${rot}deg)`));
-            spools.clock.forEach(el => el && (el.style.transform = `rotate(${rot}deg)`));
-            if (spools.takeup) spools.takeup.style.transform = `rotate(-${rot * 1.05}deg)`;
+    const animate = (currentTime) => {
+        if (audio.paused) return;
 
-            if (machine.path && machine.tapeTab) {
-                const len = machine.path.getTotalLength();
-                const dist = len - (progress * len);
-                const p = machine.path.getPointAtLength(dist);
-                const delta = 1;
-                const nextP = machine.path.getPointAtLength(dist - delta < 0 ? dist + delta : dist - delta);
-                let angle = Math.atan2(nextP.y - p.y, nextP.x - p.x) * (180 / Math.PI);
-                if (dist - delta < 0) angle += 180;
-                machine.tapeTab.setAttribute('transform', `translate(${p.x}, ${p.y}) rotate(${angle + 90})`);
-            }
+        if (!tapeStartTime) tapeStartTime = currentTime - pausedTimeOffset;
+        const elapsed = currentTime - tapeStartTime;
+        const progress = (elapsed % tapeLoopDuration) / tapeLoopDuration;
+        const rot = (elapsed / 20) % 360; 
 
-            if (analyser) {
-                analyser.getByteFrequencyData(dataArray);
-                const intensityL = (dataArray.slice(0, 15).reduce((a, b) => a + b) / 15) / 255;
-                const intensityR = (dataArray.slice(16, 31).reduce((a, b) => a + b) / 15) / 255;
-                if (machine.meterR) machine.meterR.style.transform = `rotate(${300 + (intensityR * 220)}deg)`;
-                if (machine.meterL) machine.meterL.style.transform = `rotate(${90 - (intensityL * 220)}deg)`;
-            }
-            animationFrameId = requestAnimationFrame(animate);
-        };
+        spools.anti.forEach(el => el && (el.style.transform = `rotate(-${rot}deg)`));
+        spools.clock.forEach(el => el && (el.style.transform = `rotate(${rot}deg)`));
+        if (spools.takeup) spools.takeup.style.transform = `rotate(-${rot * 1.05}deg)`;
 
-        const loadTrack = (index) => {
-            const trackItems = document.querySelectorAll('.track-item');
-            if (!trackItems.length) return 0;
-            let targetIndex = (index + trackItems.length) % trackItems.length;
-            const item = trackItems[targetIndex];
-            const grabbedSrc = item.getAttribute('data-src');
+        if (machine.path && machine.tapeTab) {
+            const len = machine.path.getTotalLength();
+            const dist = len - (progress * len);
+            const p = machine.path.getPointAtLength(dist);
+            const delta = 1;
+            const nextP = machine.path.getPointAtLength(dist - delta < 0 ? dist + delta : dist - delta);
+            let angle = Math.atan2(nextP.y - p.y, nextP.x - p.x) * (180 / Math.PI);
+            if (dist - delta < 0) angle += 180;
+            machine.tapeTab.setAttribute('transform', `translate(${p.x}, ${p.y}) rotate(${angle + 90})`);
+        }
+
+        if (analyser) {
+            analyser.getByteFrequencyData(dataArray);
+            const intensityL = (dataArray.slice(0, 15).reduce((a, b) => a + b) / 15) / 255;
+            const intensityR = (dataArray.slice(16, 31).reduce((a, b) => a + b) / 15) / 255;
+            if (machine.meterR) machine.meterR.style.transform = `rotate(${300 + (intensityR * 220)}deg)`;
+            if (machine.meterL) machine.meterL.style.transform = `rotate(${90 - (intensityL * 220)}deg)`;
+        }
+        animationFrameId = requestAnimationFrame(animate);
+    };
+
+    const loadTrack = (index) => {
+        const trackItems = document.querySelectorAll('.track-item');
+        if (!trackItems.length) return 0;
+        let targetIndex = (index + trackItems.length) % trackItems.length;
+        const item = trackItems[targetIndex];
+        const grabbedSrc = item.getAttribute('data-src');
+        
+        console.log("Attempting to load source:", grabbedSrc);
+
+        initAudio();
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+
+        audio.src = grabbedSrc;
+        audio.load(); 
+
+        if (ui.trackTitle) ui.trackTitle.innerText = item.innerText;
+        trackItems.forEach(li => li.classList.remove('active'));
+        item.classList.add('active');
+        tapeStartTime = null; pausedTimeOffset = 0;
+        
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        
+        audio.play().then(() => {
+            if (ui.duration) ui.duration.textContent = formatTime(audio.duration);
+            if (ui.playIcon) ui.playIcon.className = 'pause-icon';
+            machine.playBtnsSVG.forEach(b => b?.classList.add('btn-pressed'));
+            if (machine.tapeTab) machine.tapeTab.style.opacity = "1";
             
-            console.log("Attempting to load source:", grabbedSrc); // <--- ADD THIS
+            animationFrameId = requestAnimationFrame(animate);
+            randomizeHardware();
+        }).catch((err) => {
+            console.warn("Playback prevented by browser:", err); 
+        });
+        
+        return targetIndex;
+    };
 
-            // 1. Initialize and wake up the AudioContext synchronously during the click
+    let globalTrackIndex = 0;
+    
+    ui.playBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!audio.getAttribute('src')) {
+            globalTrackIndex = loadTrack(0);
+            return; 
+        }
+
+        if (audio.paused) {
             initAudio();
+            
             if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
-
-            // 2. Set the source and explicitly tell the browser to load it
-            audio.src = grabbedSrc;
             
-            audio.load(); 
+            if (ui.trackTitle && ui.trackTitle.innerText === 'SELECT A TRACK') {
+                const activeItem = document.querySelector('.track-item.active');
+                if (activeItem) ui.trackTitle.innerText = activeItem.innerText;
+            }
 
-            if (ui.trackTitle) ui.trackTitle.innerText = item.innerText;
-            trackItems.forEach(li => li.classList.remove('active'));
-            item.classList.add('active');
-            tapeStartTime = null; pausedTimeOffset = 0;
-            
-            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            if (ui.duration && audio.duration) {
+                ui.duration.textContent = formatTime(audio.duration);
+            }
             
             audio.play().then(() => {
-                // Update duration when loading a new track via click or skip
-                if (ui.duration) ui.duration.textContent = formatTime(audio.duration);
-                if (ui.playIcon) ui.playIcon.className = 'pause-icon';
-                machine.playBtnsSVG.forEach(b => b?.classList.add('btn-pressed'));
                 if (machine.tapeTab) machine.tapeTab.style.opacity = "1";
-                
-                // Original animation logic triggers here
-                animationFrameId = requestAnimationFrame(animate);
+                ui.playIcon.className = 'pause-icon';
+                machine.playBtnsSVG.forEach(b => b?.classList.add('btn-pressed'));
                 randomizeHardware();
-            }).catch((err) => {
-                console.warn("Playback prevented by browser:", err); 
-            });
-            
-            return targetIndex;
-        };
-
-        let globalTrackIndex = 0;
-        
-        ui.playBtn?.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (!audio.getAttribute('src')) {
-                globalTrackIndex = loadTrack(0);
-                return; 
-            }
-
-            if (audio.paused) {
-                initAudio();
-                
-                // Safari safety guard: wake up the audio context if it was suspended
-                if (audioCtx && audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-                
-                // Sync title if it's still default
-                if (ui.trackTitle && ui.trackTitle.innerText === 'SELECT A TRACK') {
-                    const activeItem = document.querySelector('.track-item.active');
-                    if (activeItem) ui.trackTitle.innerText = activeItem.innerText;
-                }
-
-                // Sync duration immediately if metadata is already loaded
-                if (ui.duration && audio.duration) {
-                    ui.duration.textContent = formatTime(audio.duration);
-                }
-                
-                // Catch the promise to prevent silent console failures
-                audio.play().then(() => {
-                    if (machine.tapeTab) machine.tapeTab.style.opacity = "1";
-                    ui.playIcon.className = 'pause-icon';
-                    machine.playBtnsSVG.forEach(b => b?.classList.add('btn-pressed'));
-                    randomizeHardware();
-                    animationFrameId = requestAnimationFrame(animate);
-                }).catch(e => console.log("Playback prevented:", e));
-            } else {
-                audio.pause();
-                ui.playIcon.className = 'play-icon';
-                pausedTimeOffset = performance.now() - (tapeStartTime || performance.now());
-                resetHardware();
-            }
-        });
-
-        ui.stopBtn?.addEventListener('click', () => {
+                animationFrameId = requestAnimationFrame(animate);
+            }).catch(e => console.log("Playback prevented:", e));
+        } else {
             audio.pause();
-            audio.currentTime = 0;
-            if (machine.tapeTab) machine.tapeTab.style.opacity = "0";
-            pausedTimeOffset = 0;
             ui.playIcon.className = 'play-icon';
-            resetHardware(true);
-        });
-
-        ui.skipBtn?.addEventListener('click', () => { globalTrackIndex = loadTrack(globalTrackIndex + 1); });
-        ui.prevBtn?.addEventListener('click', () => { globalTrackIndex = loadTrack(globalTrackIndex - 1); });
-        if (ui.vol) {
-            ui.vol.addEventListener('input', (e) => {
-                const val = parseFloat(e.target.value);
-                
-                audio.volume = val; 
-                
-                // Safari Web Audio API fix
-                if (gainNode) {
-                    gainNode.gain.setTargetAtTime(val, audioCtx.currentTime, 0.01);
-                }
-            });
+            pausedTimeOffset = performance.now() - (tapeStartTime || performance.now());
+            resetHardware();
         }
+    });
+
+    ui.stopBtn?.addEventListener('click', () => {
+        audio.pause();
+        audio.currentTime = 0;
         if (ui.progress) {
-            ui.progress.addEventListener('input', (e) => {
-                // Ensure duration exists before trying to calculate
-                if (audio.duration) {
-                    audio.currentTime = (e.target.value / 100) * audio.duration;
-                }
-            });
+            ui.progress.value = 0;
+            updateProgressBarVisual(); // Visual reset
         }
+        if (machine.tapeTab) machine.tapeTab.style.opacity = "0";
+        pausedTimeOffset = 0;
+        ui.playIcon.className = 'play-icon';
+        resetHardware(true);
+    });
 
-        // Metadata listener for tracks that haven't loaded yet
-        audio.addEventListener('loadedmetadata', () => {
-            if (ui.duration) ui.duration.textContent = formatTime(audio.duration);
-        });
-
-        audio.addEventListener('timeupdate', () => {
-            if (ui.progress) ui.progress.value = (audio.currentTime / audio.duration) * 100 || 0;
-            if (ui.current) {
-                ui.current.textContent = formatTime(audio.currentTime);
+    ui.skipBtn?.addEventListener('click', () => { globalTrackIndex = loadTrack(globalTrackIndex + 1); });
+    ui.prevBtn?.addEventListener('click', () => { globalTrackIndex = loadTrack(globalTrackIndex - 1); });
+    
+    if (ui.vol) {
+        ui.vol.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            if (isNaN(val)) return;
+            
+            const normalizedVal = val > 1 ? val / 100 : val;
+            
+            // SAFARI FIX: Route explicitly to GainNode property mapping 
+            // without clock automations or native element mutations to ensure audio doesn't mute.
+            if (gainNode) {
+                gainNode.gain.value = normalizedVal;
+            } else {
+                audio.volume = normalizedVal;
             }
         });
-
-        document.querySelectorAll('.track-item').forEach((item, index) => {
-            item.addEventListener('click', () => { globalTrackIndex = loadTrack(index); });
-        });
-
-        audio.addEventListener('ended', () => { globalTrackIndex = loadTrack(globalTrackIndex + 1); });
     }
+
+    if (ui.progress) {
+        ui.progress.addEventListener('input', (e) => {
+            if (audio.duration) {
+                audio.currentTime = (e.target.value / 100) * audio.duration;
+            }
+            updateProgressBarVisual(); // Render fill instantly when scrubbing
+        });
+    }
+
+    audio.addEventListener('loadedmetadata', () => {
+        if (ui.duration) ui.duration.textContent = formatTime(audio.duration);
+        updateProgressBarVisual(); // Render initial state on load
+    });
+
+    audio.addEventListener('timeupdate', () => {
+        if (ui.progress) {
+            ui.progress.value = (audio.currentTime / audio.duration) * 100 || 0;
+            updateProgressBarVisual(); // Render dynamic runtime fill
+        }
+        if (ui.current) {
+            ui.current.textContent = formatTime(audio.currentTime);
+        }
+    });
+
+    document.querySelectorAll('.track-item').forEach((item, index) => {
+        item.addEventListener('click', () => { globalTrackIndex = loadTrack(index); });
+    });
+
+    audio.addEventListener('ended', () => { globalTrackIndex = loadTrack(globalTrackIndex + 1); });
+    
+    // Initial run for progress tracking baseline visual state
+    updateProgressBarVisual();
+}
 
     // --- MISC PAGE LOGICS ---
 

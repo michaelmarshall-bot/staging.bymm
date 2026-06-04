@@ -44,6 +44,7 @@
     /*Tape Machine Styles*/
         :root {
             --tape-color: hsl(var(--card-hue), 70%, 60%);
+            --slider-bar-color: #e0e0e0;
         }
 
         #tapeMachine {
@@ -114,6 +115,8 @@
         .cls-52, .cls-34 {fill: var(--tape-color)}
 
 /* Audio Player */
+
+        
 
         /* Strip default Safari styling from the input container */
         input[type="range"] {
@@ -200,6 +203,20 @@
             flex-grow: 1;
             accent-color: var(--tape-color);
             cursor: pointer;
+        }
+
+        #progress-bar {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px; /* Adjust height to taste */
+            cursor: pointer;
+            border: none;
+            background: var(--slider-bar-color); /* Fallback baseline background if JS isn't warm yet */
+        }
+
+        #progress-bar::-webkit-slider-runnable-track {
+            background: transparent;
         }
 
         .interface-row {
@@ -338,6 +355,8 @@
                 width: 100%;
                 max-width: 300px;
                 justify-content: center;
+                display: none
+                /*Hidden on Mobile in preference for hardware interface*/
             }
 
             .title-text { font-size: 1rem; }
@@ -877,7 +896,7 @@
                     </div>
                 </div>
             </div>
-            <div id="transcript-btn"><p>Context <span>☛</span></p></div>
+            <div id="transcript-btn"><p>Context&nbsp;<span>☛</span></p></div>
         </section>
         <section class="section-above nav-card-section" id="transcript-section">
             <div class="card">
