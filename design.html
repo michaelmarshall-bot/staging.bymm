@@ -72,6 +72,9 @@
         
 
         .hero-fade {
+            /* Forces WebKit hardware acceleration */
+            transform: translateZ(0); 
+            will-change: opacity;
             display: block;
             position: absolute;
             top: 50%;
