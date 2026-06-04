@@ -90,6 +90,16 @@ html, body {
     font-weight: inherit;
     text-wrap: pretty;
 }
+
+/*Accessibility Friendly Solution to Tap Highlight Issues*/
+a:focus-visible {
+   outline: 4px solid rgba(0, 255, 200, 0.5);
+}
+
+a:active {
+  outline: none;
+}
+
 ::-webkit-scrollbar { display: none; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
