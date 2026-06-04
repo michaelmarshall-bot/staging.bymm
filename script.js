@@ -164,11 +164,18 @@ if (audio && svg) {
         return `${m}:${s < 10 ? '0' : ''}${s}`;
     };
 
-    // progress bar
-    const updateProgressBarVisual = () => {
-        if (!ui.progress) return;
-        const pct = ui.progress.value || 0;
-        ui.progress.style.background = `linear-gradient(to right, var(--tape-color, #00ff00) ${pct}%, var(--slider-bar-color, #222) ${pct}%)`;
+    // Generic cross-browser slider background filler using theme variables
+    const updateSliderVisual = (slider) => {
+        if (!slider) return;
+        const min = parseFloat(slider.min) || 0;
+        // Fallback to 100 if max attribute is missing, which is the HTML range default
+        const max = slider.max ? parseFloat(slider.max) : 100; 
+        const val = parseFloat(slider.value) || 0;
+        
+        // Calculate percentage relative to the slider's specific min/max bounds
+        const pct = ((val - min) / (max - min)) * 100;
+        
+        slider.style.background = `linear-gradient(to right, var(--tape-color, #00ff00) ${pct}%, var(--slider-bar-color, #222) ${pct}%)`;
     };
 
     const machine = {
@@ -214,8 +221,6 @@ if (audio && svg) {
         analyser.fftSize = 64; 
         dataArray = new Uint8Array(analyser.frequencyBinCount);
         
-        // SAFARI FIX: Safely assign volume exclusively to the Web Audio Graph. 
-        // Do NOT assign audio.volume here; let Safari stream uninhibited into the context.
         if (ui.vol) {
             const rawVol = parseFloat(ui.vol.value);
             if (!isNaN(rawVol)) {
@@ -355,7 +360,7 @@ if (audio && svg) {
         audio.currentTime = 0;
         if (ui.progress) {
             ui.progress.value = 0;
-            updateProgressBarVisual(); // Visual reset
+            updateSliderVisual(ui.progress); // Visual reset for progress bar
         }
         if (machine.tapeTab) machine.tapeTab.style.opacity = "0";
         pausedTimeOffset = 0;
@@ -373,13 +378,13 @@ if (audio && svg) {
             
             const normalizedVal = val > 1 ? val / 100 : val;
             
-            // SAFARI FIX: Route explicitly to GainNode property mapping 
-            // without clock automations or native element mutations to ensure audio doesn't mute.
             if (gainNode) {
                 gainNode.gain.value = normalizedVal;
             } else {
                 audio.volume = normalizedVal;
             }
+            
+            updateSliderVisual(ui.vol); // Render volume fill instantly on slide
         });
     }
 
@@ -388,19 +393,19 @@ if (audio && svg) {
             if (audio.duration) {
                 audio.currentTime = (e.target.value / 100) * audio.duration;
             }
-            updateProgressBarVisual(); // Render fill instantly when scrubbing
+            updateSliderVisual(ui.progress); // Render progress fill instantly when scrubbing
         });
     }
 
     audio.addEventListener('loadedmetadata', () => {
         if (ui.duration) ui.duration.textContent = formatTime(audio.duration);
-        updateProgressBarVisual(); // Render initial state on load
+        updateSliderVisual(ui.progress); 
     });
 
     audio.addEventListener('timeupdate', () => {
         if (ui.progress) {
             ui.progress.value = (audio.currentTime / audio.duration) * 100 || 0;
-            updateProgressBarVisual(); // Render dynamic runtime fill
+            updateSliderVisual(ui.progress); // Dynamic track progress updates
         }
         if (ui.current) {
             ui.current.textContent = formatTime(audio.currentTime);
@@ -413,8 +418,9 @@ if (audio && svg) {
 
     audio.addEventListener('ended', () => { globalTrackIndex = loadTrack(globalTrackIndex + 1); });
     
-    // Initial run for progress tracking baseline visual state
-    updateProgressBarVisual();
+    // Initial run to map system baselines for both custom track elements
+    updateSliderVisual(ui.progress);
+    updateSliderVisual(ui.vol);
 }
 
     // --- MISC PAGE LOGICS ---
