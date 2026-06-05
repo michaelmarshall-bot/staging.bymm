@@ -454,12 +454,20 @@ if (audio && svg) {
     if (mySwitch) {
         mySwitch.addEventListener('change', function() {
             const isChecked = this.checked;
-            document.querySelectorAll(':root, .dust-overlay, .scanlines, .slider, .card, .work-item, .work-stack, .work-info, .cassette-menu, .led, .power-indicator, .btn-tape, .tape-control, .hero-anim, .hero-section, section, #heroType, .heroPoem, .wordsBody, .pubHed-section, .footnote, #poetsTagline, .ink-container, .footer-id, .social-links')
-                .forEach(el => el.classList.toggle('litMode', isChecked));
+            document.querySelectorAll(':root, .dust-overlay, .scanlines, .slider, .card, .work-item, .work-stack, .work-info, .cassette-menu, .led, .power-indicator, .btn-tape, .tape-control, .hero-anim, .hero-section, #heroType, .heroPoem, .wordsBody, .pubHed-section, .footnote, #poetsTagline, .ink-container, .footer-id, .social-links')
+                .forEach(el => {
+                    el.classList.toggle('litMode', isChecked);
+                    
+                    // Safari Fix: Force a layout recalculation specifically for sections 
+                    // to prevent WebKit from dropping the padding on class toggle.
+                    if (el.tagName === 'SECTION') {
+                        void el.offsetHeight;
+                    }
+                });
         });
     }
 
-    //Lit Switch Animations
+    // Lit Switch Animations
     const toggle = document.querySelector('#litSwitch input');
     const target = document.querySelector('#glitchBody');
 
