@@ -37,79 +37,124 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Testimonial Slider ---
     document.querySelectorAll('.testimonial-wrapper').forEach((wrapper) => {
-        const slider = wrapper.querySelector('.slider-container');
-        const nextBtn = wrapper.querySelector('.slideArrow.next');
-        const prevBtn = wrapper.querySelector('.slideArrow.prev');
+    const slider = wrapper.querySelector('.slider-container');
+    const nextBtn = wrapper.querySelector('.slideArrow.next');
+    const prevBtn = wrapper.querySelector('.slideArrow.prev');
+    const track = wrapper.querySelector('.hardware-track'); // 1. Select the new track
 
-        if (!slider || !nextBtn || !prevBtn) return;
+    if (!slider || !nextBtn || !prevBtn) return;
 
-        const updateArrows = () => {
-            // Guard clause: Do not manipulate classes on mobile viewports
-            if (window.innerWidth < 640) return;
+    // 2. Consolidate scroll updates (arrows + tuner needle)
+    const updateProgress = () => {
+        const scrollLeft = slider.scrollLeft;
+        const maxScroll = slider.scrollWidth - slider.clientWidth;
 
-            const scrollLeft = slider.scrollLeft;
-            const maxScroll = slider.scrollWidth - slider.clientWidth;
-
-            // Clean, standard boundary checks
+        // Arrow boundary checks (Guard clause for mobile)
+        if (window.innerWidth >= 640) {
             const isAtStart = scrollLeft <= 10;
             const isAtEnd = scrollLeft >= maxScroll - 10;
-
             prevBtn.classList.toggle('is-hidden', isAtStart);
             nextBtn.classList.toggle('is-hidden', isAtEnd);
+        }
+
+        // Tuner needle sync
+        if (track) {
+            const pct = maxScroll <= 0 ? 0 : scrollLeft / maxScroll;
+            wrapper.style.setProperty('--scroll-pct', pct);
+        }
+    };
+
+    // Scroll and resize listeners (Now calling the consolidated function)
+    slider.addEventListener('scroll', updateProgress);
+    window.addEventListener('resize', updateProgress);
+    setTimeout(updateProgress, 50);
+
+    /* --- EXISTING DRAG LOGIC FOR THE CARDS --- */
+    let isDown = false, startX, scrollLeftState;
+
+    slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        slider.style.scrollSnapType = 'none'; 
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeftState = slider.scrollLeft;
+        slider.style.cursor = 'grabbing';
+    });
+
+    const stopDragging = () => {
+        isDown = false;
+        slider.style.cursor = 'grab';
+        slider.style.scrollSnapType = 'x mandatory';
+    };
+
+    slider.addEventListener('mouseleave', stopDragging);
+    slider.addEventListener('mouseup', stopDragging);
+    
+    slider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 2; 
+        slider.scrollLeft = scrollLeftState - walk; 
+    });
+
+    /* --- EXISTING BUTTON LOGIC --- */
+    const smoothScroll = (amount) => {
+        slider.style.scrollSnapType = 'none';
+        slider.scrollBy({ left: amount, behavior: 'smooth' });
+        setTimeout(() => {
+            slider.style.scrollSnapType = 'x mandatory';
+        }, 500); 
+    };
+
+    nextBtn.addEventListener('click', () => {
+        const slide = slider.querySelector('.slide');
+        if (slide) smoothScroll(slide.offsetWidth);
+    });
+
+    prevBtn.addEventListener('click', () => {
+        const slide = slider.querySelector('.slide');
+        if (slide) smoothScroll(-slide.offsetWidth);
+    });
+
+    /* --- NEW: DRAG LOGIC FOR THE TUNER TRACK --- */
+    if (track) {
+        let isTrackDragging = false;
+
+        const handleTrackDrag = (e) => {
+            const rect = track.getBoundingClientRect();
+            // Calculate relative pointer position, clamped strictly between 0 and 1
+            const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+            const pct = x / rect.width;
+            
+            // Remove snap temporarily for buttery smooth 1:1 mouse tracking
+            slider.style.scrollSnapType = 'none';
+            slider.scrollLeft = pct * (slider.scrollWidth - slider.clientWidth);
         };
 
-        // Scroll and resize listeners
-        slider.addEventListener('scroll', updateArrows);
-        window.addEventListener('resize', updateArrows);
-        setTimeout(updateArrows, 50);
-
-        // Standard Drag Logic
-        let isDown = false, startX, scrollLeftState;
-
-        slider.addEventListener('mousedown', (e) => {
-            isDown = true;
-            slider.style.scrollSnapType = 'none'; 
-            startX = e.pageX - slider.offsetLeft;
-            scrollLeftState = slider.scrollLeft;
-            slider.style.cursor = 'grabbing';
+        // Pointer events handle both mouse clicks and touch swipes seamlessly
+        track.addEventListener('pointerdown', (e) => {
+            isTrackDragging = true;
+            track.setPointerCapture(e.pointerId); 
+            handleTrackDrag(e);
         });
 
-        const stopDragging = () => {
-            isDown = false;
-            slider.style.cursor = 'grab';
+        track.addEventListener('pointermove', (e) => {
+            if (!isTrackDragging) return;
+            handleTrackDrag(e);
+        });
+
+        const stopTrackDragging = (e) => {
+            if (!isTrackDragging) return;
+            isTrackDragging = false;
+            track.releasePointerCapture(e.pointerId);
+            // Restore snap functionality once the user lets go of the needle
             slider.style.scrollSnapType = 'x mandatory';
         };
 
-        slider.addEventListener('mouseleave', stopDragging);
-        slider.addEventListener('mouseup', stopDragging);
-        
-        slider.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - slider.offsetLeft;
-            const walk = (x - startX) * 2; 
-            slider.scrollLeft = scrollLeftState - walk; // Standard subtraction for LTR layout
-        });
-
-        // Clean Programmatic Scroll (Bypasses WebKit scroll-snap bugs)
-        const smoothScroll = (amount) => {
-            slider.style.scrollSnapType = 'none';
-            slider.scrollBy({ left: amount, behavior: 'smooth' });
-            setTimeout(() => {
-                slider.style.scrollSnapType = 'x mandatory';
-            }, 500); 
-        };
-
-        nextBtn.addEventListener('click', () => {
-            const slide = slider.querySelector('.slide');
-            if (slide) smoothScroll(slide.offsetWidth);
-        });
-
-        prevBtn.addEventListener('click', () => {
-            const slide = slider.querySelector('.slide');
-            if (slide) smoothScroll(-slide.offsetWidth);
-        });
-    });
+        track.addEventListener('pointerup', stopTrackDragging);
+        track.addEventListener('pointercancel', stopTrackDragging);
+    }
+});
 
     // --- COLOR ROTATOR ---
     document.querySelectorAll('.card').forEach((el, index) => {
