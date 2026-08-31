@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Reporting | by MM</title>
+    <link rel="stylesheet" href="styles.css">
+    <!--Favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/index2/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/index2/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/index2/favicon-16x16.png">
+    <link rel="manifest" href="favicon/index2/site.webmanifest">
+    <!--Typefaces-->
+    <!--Self-Host
+    <link rel="preload" href="MangoGrotesque-Black.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="Estrella-Early.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="webfonts.css">-->
+    <!--3rd-Party-Host-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cossette+Titre:wght@400;700&family=Outfit:wght@100..900&family=Pirata+One&family=Zalando+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.typekit.net/pts5odv.css">
+    <link rel="stylesheet" href="https://use.typekit.net/mda1wve.css">
+    <style>
+        /* Base Layout */
+
+        .scroll-container {
+            position: relative;
+            display: block;
+            overflow: clip;
+            min-height: 100vh;
+        }
+
+        .hero-section {
+            width: 100%;
+            height: 100%;
+            min-height: 100vh; 
+            bottom: 0;
+            position: relative;
+            display: grid;
+            place-items: center;
+            z-index: 8;
+        }
+
+        .hero-title {
+            text-align: center;
+            color: var(--hed-colour);
+            z-index: 10;
+            max-width: 80vw;
+            margin: 0;
+            text-transform: none;
+            border: 1px solid var(--lcd-glow-color);
+            box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.5); 
+            padding: 1.5rem 1rem;
+            font: var(--font-body);
+            font-family: var(--hed-type);
+            font-weight: 900;
+            text-transform: uppercase; 
+            letter-spacing: calc(var(--hed-letterspace) + 1px);
+            font-size: clamp(1rem, 2vw, 2rem);
+            background-color: var(--bg-main);
+            position: fixed;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            animation: 
+                glitchLoad 6s ease-in-out none 1;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        
+
+        .hero-fade {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateZ(0);
+            width: 100%;
+            height: 100%;
+            min-height: 100vh;
+            z-index: 9;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        /* Safari-friendly filter separation */
+        .hero-fade::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 100vh, var(--bg-main) 25%, var(--bg-main) 100%);
+            /*filter: url(#pixelNoise);*/
+        }
+
+        .hero-title > span {
+            font: var(--font-body);
+            text-transform: none;
+            letter-spacing: initial;
+            margin-top: var(--block-margin);
+        }
+
+        @media  (min-width: 580px) {
+             .hero-title {
+                padding: 1.5rem 2rem;
+             }
+
+            .hero-title > span {
+                margin-top: 0px;
+            }
+        }
+
+        .hero-section p {
+            /*display: inline-block;*/
+            text-align: end;
+            padding: 0px;
+            color: var(--hed-colour);
+        }
+
+        .floating-logo {
+            position: fixed;
+            height: clamp(30px, 5vw, 50px);
+            width: auto;
+            max-width: 200px;
+            color: var(--hed-colour);
+            opacity: 1;
+            z-index: 8;
+            transform: translate(-50%, -50%);
+            transition: transform 0.2s ease, opacity 0.3s ease;
+            animation: 
+                glitchLoad 6s ease-in-out none 1;
+        }
+
+        .floating-logo:hover {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* Ensure SVG paths inherit the brand colour */
+        .floating-logo path {
+            fill: currentColor;
+        }
+
+        #IMFTLogo {
+            filter: grayscale(100%) contrast(100%);
+        }
+
+        /*Hero Glitch Animation*/
+
+        @keyframes glitchLoad {
+        50% {
+            -webkit-filter: url(#glitchHover); 
+            filter: url(#glitchHover);
+        }
+        }
+        
+        @keyframes glitchRepeat {
+            0%, 100% { filter: none; }
+            50% { filter: url(#glitchHover); }
+        }
+
+        .is-flickering {
+            animation: glitchRepeat 1s linear infinite;
+        }
+
+        /*Design Module*/
+
+        .testimonial-wrapper {
+            background: none;
+            border: none;
+            margin: 0rem 0;
+            flex-wrap: wrap;
+        }
+
+        .testimonial-section {
+            margin-top: 140vh;
+            padding: 10px 0;
+            margin-bottom: 25vh;
+        }
+
+
+        .testimonial-section .slideArrow {
+            border: solid 2px var(--hed-colour);
+        }
+
+        .testimonial-section .slide {
+            min-width: 0%;
+            padding: 1vh 0vw;
+        }
+
+        .testimonial-section .card {
+            border: solid 2px var(--hed-colour);
+        }
+
+        .mockTitle h2 {
+            position: relative;
+            font: var(--h2-styles);
+            font-size: clamp(1.618em, 6vw, 1.618em);
+            letter-spacing: calc(var(--hed-letterspace) + 1px);
+            background: var(--bg-main);
+            background-repeat: no-repeat;
+            background-position: center;
+             background-size: auto calc(100% - 20px);
+            color: var(--hed-colour);
+            border: solid 2px var(--hed-colour);
+            padding: 60% 0.2rem 0.2rem 0.2rem;
+            text-align: center;
+            align-self: center;
+            margin: var(--block-margin);
+            max-width: 600px;
+            width: 90vw;
+            display: none;
+            white-space: nowrap;
+            text-wrap: nowrap;
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none;   /* Safari, Chrome, Opera */
+            -moz-user-select: none;      /* Firefox */
+            -ms-user-select: none;       /* Internet Explorer/Edge */
+            user-select: none;           /* Standard syntax */
+        }
+
+        @media (hover: hover) {
+
+        .testimonial-wrapper .slideArrow:hover {
+            filter: url(#glitchHover);
+        }
+
+        .testimonial-wrapper:has(h2:hover) .slideArrow {
+            transform: translateY(-50%) scale(1.2);
+            filter: url(#glitchHover);
+        }
+
+        .testimonial-wrapper:has(.card:hover) .slideArrow {
+            transform: translateY(-50%) scale(1.2);
+            filter: url(#glitchHover);
+        }
+
+
+        .mockTitle h2:hover {
+            color: hsl(var(--card-hue), 70%, 60%);
+            filter: url(#glitchHover);
+        }
+
+        .mockTitle h2:hover span {
+            color: hsl(var(--card-hue), 70%, 60%);
+            text-indent: 150%;
+            filter: url(#glitchHover);
+        }
+
+        .testimonial-section .card:hover {
+            filter: none;
+        }
+
+        }
+
+        .testimonial-wrapper h2 > span:nth-of-type(1) {
+            display: none;
+        }
+
+        .testimonial-wrapper h2 > span:nth-of-type(2) {
+            display: inline;
+        }
+
+        .mobDivider {
+            display: none;
+            margin: auto;
+            width: 88vw;
+            height: 0px;
+            border: var(--border-std);
+        }
+
+        @media screen and (min-width: 640px) {
+            .testimonial-section {
+                padding: 10vh 0;
+            }
+
+            .slider-container {
+                display: flex;
+                flex-direction: row; /* Force all rows to standard left-to-right */
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .mockTitle h2 {   
+                text-align: left;
+                align-self: start;
+                padding: calc(((var(--type-ratio) * (1.618 * 3))) * 1rem) 0.2rem 0.2rem 0.2rem;
+            }
+
+        }
+
+        @media (min-width: 1024px) {
+            .slider-container {
+                padding: 0 0vw;
+                scroll-padding: 0 0vw;
+            }
+
+            .mockTitle h2 {
+                display: flex;
+            }
+        }
+        
+        .testimonial-section .card > :nth-child(3) {
+            flex-direction: column;
+        }
+
+        .testimonial-section .card > :nth-child(1):empty {
+            content: "";
+            height: 16px;
+        }
+
+        .testimonial-section .card .mockImg:has(img) {
+            padding: 0px;
+        }
+
+        .mockImg img {
+           width: 100%;
+           height: 100%;
+           display: block;
+        }
+
+        .wideImg img {
+            max-height: 100%;
+            max-width: 90vw;
+        }
+
+        @media screen and (min-width:700px) {
+
+        .slide:has(.wideImg) {
+            min-height: 100%;
+        }
+            
+        .card:has(.wideImg) {
+            max-width: none;
+            width: fit-content;
+        }
+
+        .card:has(.wideImg) > :nth-child(even) {
+            max-width: 100%;
+        }
+        }
+
+        .mockImg path {
+            fill: currentColor;
+        }
+
+        .mockImg svg {
+            margin: 2em;
+            max-width: 500px;
+            fill: var(--hed-colour);
+        }
+
+        .testimonial-section .slide {
+            align-self: center;
+        }
+
+       .testimonial-section .slide:nth-child(1) .mockImg svg {
+            margin: 2em 2em 1em 2em;
+            max-width: 500px;
+            fill: var(--hed-colour);
+        }
+
+        .testimonial-section .card > div > p > span {
+            font: var(--font-detail);
+        }
+
+        .mockImg > blockquote {
+            margin: 0px 0px -0.4em -0.1em;
+        }
+
+        .imgCaption > p > span:empty::after {
+            content: "\2014";
+            font: var(--font-body);
+        }
+
+        /*Design Context Block*/
+
+        .contextBlock {
+            flex-basis: 100%;
+            margin: auto;
+        }
+
+        .contextCard {
+            flex-wrap: wrap;
+            display: flex;
+            align-items: end;
+            background: var(--bg-main);
+            margin: auto;
+            border: var(--border-std);
+        }
+
+        .contextCard h2 {
+            font: var(--h2-styles);
+            padding: var(--h2-pad);
+            text-align: var(--type-align);
+            letter-spacing: var(--hed-letterspace);
+            line-height: var(--hero-lineheight);
+        }
+
+        .contextCard p {
+            max-width: 550px;
+            padding: var(--p-padding);
+            align-self: center;
+            margin: auto;
+        }
+
+        @media screen and (min-width: 550px) {
+            .contextCard {
+                max-width: 90vw;
+            }
+            .contextCard h2 {
+                display: block;
+                width: 0px;
+            }
+        }
+        
+        @media screen and (min-width: 622px) {
+            .contextCard h2 {
+                padding: 0;
+            }
+
+            .contextCard p {
+                padding-top: calc(var(--p-padding-top) * 2);
+                padding-bottom: calc(var(--p-padding-top) * 2);
+            }
+        }
+
+        .hardware-track {
+            display: none;
+            /*Temporary until solution is found*/
+        }
+
+        /* Time Since Last Incident Code */
+
+        /*.timer-wrapper {
+          width: 600px;
+          height: 600px;
+          display: none;
+          position: relative;
+        }*/
+
+        /*.timer {
+          background: lightgray center no-repeat;
+          background-size: 125%;
+          border: 16px black solid;
+          height: 568px;
+          position: relative;
+          width: 568px;
+          border-radius: 1000px;
+        }
+
+        .stop-button-top{
+          background: black;
+          height: 20px;
+          width: 40px;
+          position: relative;
+          z-index: 200;
+            transform: rotate(-42.5deg);
+          top: -552.5px;
+          left: 67.5px;
+          margin: 0
+        }
+
+        .stop-button-bottom{
+          background: black;
+          height: 20px;
+          width: 40px;
+          position: relative;
+          z-index: 200;
+            transform: rotate(47.5deg);
+          top: -560px;
+          left: 77.5px;
+          margin: 0;
+        }
+
+        .start-button-top{
+          background: black;
+          height: 20px;
+          width: 40px;
+          position: relative;
+          z-index: 200;
+            transform: rotate(45.0deg);
+          top: -592px;
+          left: 492px;
+          margin: 0;
+        }
+
+        .start-button-bottom{
+          background: black;
+          height: 20px;
+          width: 40px;
+          position: relative;
+          z-index: 200;
+            transform: rotate(-42.5deg);
+          top: -600px;
+          left: 480px;
+          margin: 0;
+        }
+
+        .time-box {
+          background: #abd9bd;
+          padding: 10px;
+          border-radius: 30px 30px 10px 10px;
+          border: 10px black solid;
+          height: 120px;
+          width: 395px;
+          position:relative;
+          top: 150px;
+          left: 66px;
+          font-family: 'Orbitron', sans-serif;
+        }*/
+
+        .date-box {
+          background: transparent;
+          border: 4px black solid;
+          border-radius: 10px 10px 10px 0px;
+          min-height: 180px;
+          overflow: none;
+          top: 0px;
+          font-size: 32px;
+          margin: 0px;
+          width: 54px;
+          position: relative;
+          text-align: center;
+          display: inline-block;
+        }
+
+        .intervals {
+          position: relative;
+          border-bottom: 2px black solid;
+          display: inline-block;
+        }
+
+        .labels  {
+            position: relative;
+            font: var(--font-detail);
+            font-weight: 200;
+            font-size: calc((var(--type-ratio)) * 0.8rem);
+            margin-inline-start: 15px;
+            writing-mode: vertical-lr;
+            left: 30%;
+        }
+
+        .title-wrapper {
+          position: relative;
+          text-align: center;
+          padding: 0px 0px 25px 0px;
+        }
+
+        .title {
+
+        }
+    </style>
+</head>
+<body>
+    <!--<div class="dust-overlay" id="dust"></div>-->
+    <div class="dust-overlay"></div>
+    <div class="scanlines"></div>
+    <!--Glitch & Pixelation Filters-->
+        <svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 0; height: 0; overflow: hidden;" viewBox="0 0 340 120">
+            <defs>
+                <filter id="glitchHover" primitiveUnits="objectBoundingBox" x="-10%" y="0%" width="120%" height="100%">
+                <feColorMatrix in="SourceGraphic" result="red" type="matrix" values="1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"/> 
+                <feColorMatrix in="SourceGraphic" result="green" type="matrix" values="0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0"/> 
+                <feColorMatrix in="SourceGraphic" result="blue" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0"/> 
+                <feOffset in="red" result="red-shifted" dx="-0.01" dy="0">
+                    <animate attributeName="dx" keyTimes="0;0.2257;0.2354;0.2757;0.3492;0.5235;0.8075;1" values="0.0107;0.0237;0.0177;0.0275;0.0219;0.0035;0.0228;0.0107" begin="0" dur="8.7s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                    <animate attributeName="dy" keyTimes="0;0.2257;0.2354;0.2757;0.3492;0.5235;0.8075;1" values="0.0107;0.0237;0.0177;0.0275;0.0219;0.0035;0.0228;0.0107" begin="0" dur="8.7s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                </feOffset>
+                <feOffset in="blue" result="blue-shifted" dx="0.01" dy="0">
+                    <animate attributeName="dx" keyTimes="0;0.2647;0.5423;0.5841;0.5883;0.7501;0.8890;1" values="0.0184;0.0126;0.0250;0.0207;0.0016;0.0149;0.0090;0.0251" begin="0" dur="9.57s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                    <animate attributeName="dy" keyTimes="0;0.2647;0.5423;0.5841;0.5883;0.7501;0.8890;1" values="0.0184;0.0126;0.0250;0.0207;0.0016;0.0149;0.0090;0.0251" begin="0" dur="9.57s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                </feOffset>
+                <feBlend mode="screen" in="red-shifted" in2="green" result="red-green"/>
+                <feBlend mode="screen" in="red-green" in2="blue-shifted" result="blended"/>
+                <feOffset in="blended" dx="0" dy="0" y="0%" height="6%" result="slice_0">
+                    <animate attributeName="dx" keyTimes="0;0.3533;0.3945;0.4778;0.8412;0.9118;0.9762;1" values="0.0023;0.0088;0.0108;0.0125;0.0092;0.0127;0.0027;0.0084" begin="0s" dur="1.6355s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                    <animate attributeName="dy" keyTimes="0;0.3533;0.3945;0.4778;0.8412;0.9118;0.9762;1" values="0.0023;0.0088;0.0108;0.0125;0.0092;0.0127;0.0027;0.0084" begin="0s" dur="1.6355s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                </feOffset>
+                <feOffset in="blended" dx="0" dy="0" y="6%" height="26%" result="slice_1">
+                    <animate attributeName="dx" keyTimes="0;0.3160;0.6768;0.6928;0.8076;0.8811;0.9672;1" values="0.0079;0.0074;0.0107;0.0033;0.0119;0.0067;0.0070;0.0073" begin="0s" dur="1.7493s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                    <animate attributeName="dy" keyTimes="0;0.3160;0.6768;0.6928;0.8076;0.8811;0.9672;1" values="0.0079;0.0074;0.0107;0.0033;0.0119;0.0067;0.0070;0.0073" begin="0s" dur="1.7493s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                </feOffset>
+                <feOffset in="blended" dx="0" dy="0" y="32%" height="10%" result="slice_2">
+                    <animate attributeName="dx" keyTimes="0;0.1164;0.3560;0.7653;0.8200;0.9080;0.9235;1" values="0.0031;0.0011;0.0095;0.0030;0.0021;0.0125;0.0110;0.0073" begin="0s" dur="1.4082s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                    <animate attributeName="dy" keyTimes="0;0.1164;0.3560;0.7653;0.8200;0.9080;0.9235;1" values="0.0031;0.0011;0.0095;0.0030;0.0021;0.0125;0.0110;0.0073" begin="0s" dur="1.4082s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                </feOffset>
+                <feOffset in="blended" dx="0" dy="0" y="42%" height="8%" result="slice_3">
+                    <animate attributeName="dx" keyTimes="0;0.1791;0.2069;0.4204;0.4373;0.7437;0.9224;1" values="0.0123;0.0105;0.0120;0.0053;0.0067;0.0083;0.0038;0.0095" begin="0s" dur="1.1282s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                    <animate attributeName="dy" keyTimes="0;0.1791;0.2069;0.4204;0.4373;0.7437;0.9224;1" values="0.0123;0.0105;0.0120;0.0053;0.0067;0.0083;0.0038;0.0095" begin="0s" dur="1.1282s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                </feOffset>
+                <feOffset in="blended" dx="0" dy="0" y="50%" height="6%" result="slice_4">
+                    <animate attributeName="dx" keyTimes="0;0.2204;0.2582;0.2633;0.3458;0.5244;0.5397;1" values="0.0031;0.0065;0.0072;0.0087;0.0090;0.0014;0.0013;0.0067" begin="0s" dur="1.3618s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                    <animate attributeName="dy" keyTimes="0;0.2204;0.2582;0.2633;0.3458;0.5244;0.5397;1" values="0.0031;0.0065;0.0072;0.0087;0.0090;0.0014;0.0013;0.0067" begin="0s" dur="1.3618s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                </feOffset>
+                <feOffset in="blended" dx="0" dy="0" y="56%" height="11%" result="slice_5">
+                    <animate attributeName="dx" keyTimes="0;0.1968;0.3354;0.4156;0.4548;0.7475;0.8383;1" values="0.0068;0.0071;0.0097;0.0130;0.0119;0.0072;0.0050;0.0088" begin="0s" dur="1.5411s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                    <animate attributeName="dy" keyTimes="0;0.1968;0.3354;0.4156;0.4548;0.7475;0.8383;1" values="0.0068;0.0071;0.0097;0.0130;0.0119;0.0072;0.0050;0.0088" begin="0s" dur="1.5411s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                </feOffset>
+                <feOffset in="blended" dx="0" dy="0" y="67%" height="13%" result="slice_6">
+                    <animate attributeName="dx" keyTimes="0;0.0887;0.2142;0.4857;0.6041;0.7496;0.9835;1" values="0.0085;0.0071;0.0051;0.0128;0.0093;0.0123;0.0091;0.0074" begin="0s" dur="1.388s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                    <animate attributeName="dy" keyTimes="0;0.0887;0.2142;0.4857;0.6041;0.7496;0.9835;1" values="0.0085;0.0071;0.0051;0.0128;0.0093;0.0123;0.0091;0.0074" begin="0s" dur="1.388s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                </feOffset>
+                <feOffset in="blended" dx="0" dy="0" y="80%" height="20%" result="slice_7">
+                    <animate attributeName="dx" keyTimes="0;0.2669;0.5160;0.6021;0.7034;0.7622;0.9087;1" values="0.0124;0.0025;0.0119;0.0012;0.0105;0.0120;0.0037;0.0011" begin="0s" dur="1.4736s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                    <animate attributeName="dy" keyTimes="0;0.2669;0.5160;0.6021;0.7034;0.7622;0.9087;1" values="0.0124;0.0025;0.0119;0.0012;0.0105;0.0120;0.0037;0.0011" begin="0s" dur="1.4736s" calcMode="discrete" repeatCount="indefinite" fill="freeze"/>
+                </feOffset>
+                <feMerge>
+                    <feMergeNode in="slice_0"/><feMergeNode in="slice_1"/><feMergeNode in="slice_2"/><feMergeNode in="slice_3"/><feMergeNode in="slice_4"/><feMergeNode in="slice_5"/><feMergeNode in="slice_6"/><feMergeNode in="slice_7"/>
+                </feMerge>
+                </filter>
+            </defs>
+        </svg>
+        <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+            <filter id="pixelNoise" x="0" y="0">
+                <!-- Block -->
+                <feFlood x="4" y="4" height="1" width="1"/>
+                <!-- 2. Grid Size -->
+                <feComposite width="5" height="5"/>
+                <!-- Point Name-->
+                <feTile result="a"/>
+                <!-- Map the original gradient colors onto these tiles -->
+                <feComposite in="SourceGraphic" in2="a" operator="in"/>
+                <!-- Expand the tiny points to fill the tile size -->
+                <feMorphology operator="dilate" radius="2.5"/>
+
+                <!-- ADD THIS TO BOOST CONTRAST 
+                <feComponentTransfer>
+                <feFuncR type="gamma" amplitude="1.2" exponent="2" offset="-0.1"/>
+                <feFuncG type="gamma" amplitude="1.2" exponent="2" offset="-0.1"/>
+                <feFuncB type="gamma" amplitude="1.2" exponent="2" offset="-0.1"/>
+                </feComponentTransfer>-->
+            </filter> 
+        </svg>
+    <div class="scroll-container">
+        <!--<section class="section-behind hero-section" id="lcd-screen">
+        </section>
+        <div class="hero-fade"></div>
+        <section class="section-above testimonial-section">
+            <div class="testimonial-wrapper">
+                <button class="slideArrow prev">↢</button>
+                <button class="slideArrow next">↣</button>
+                <div class="slider-container">
+                    <div class="slider-track">
+                        <div class="slide mockTitle">
+                            <h2><span>&ensp;☞</span>Elyse Jocelyn<span>&ensp;☞</span>
+                            </h2>
+                        </div>
+                        <div class="slide">
+                            <div class="card">
+                                <div>Elyse Jocelyn Photography</div>
+                                <div class="mockImg">
+                                    <img src="/assets/mocks/elysejocelyn/ejcard.jpg"/>
+                                    <blockquote><span></span></blockquote>
+                                </div>
+                                <div class="imgCaption">
+                                    <p><span>Impasse:</span> How do you capture a qualitative service in a brand?</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hardware-track">
+                        <div class="hardware-indicator"></div>
+                </div>
+                <div class="contextBlock">
+                    <div class="contextCard">
+                        <h2>Brand</h2>
+                        <p>Elyse Jocelyn Photography needed a concrete identity for a growing business that could adapt as it bloomed. The result is a logo and brand mark that’s versatile, distinct, and&mdash;with its stylistic nod to retro photography&mdash;timeless.</p>
+                        <div class="flex-buffer"></div>
+                    </div>
+                </div>
+            </div>
+        </section>-->
+        <section class="section-behind hero-section" id="lcd-screen">
+         <div class='timer-wrapper'>
+            <div class='title-wrapper'>
+              <h1 class='title'>Time Since Last Incident</h1>
+            </div>
+          <div class='timer'>
+            <div class='time-box'>
+              <div class='date-box'>
+                <p id='years' class='intervals'></p>
+                <p class='labels'>Years</p>
+              </div>
+              <div class='date-box'>
+                <p id='months' class='intervals'></p>
+                <p class='labels'>Months</p>
+              </div>
+              <div class='date-box'>
+                <p id='days' class='intervals'></p>
+                <p class='labels'>Days</p>
+              </div>
+              <div class='date-box'>
+                <p id='hours' class='intervals'></p>
+                <p class='labels'>Hours</p>
+              </div>
+              <div class='date-box'>
+                <p id='minutes' class='intervals'></p>
+                <p class='labels'>Minutes</p>
+              </div>
+              <div class='date-box'>
+                <p id='seconds' class='intervals'></p>
+                <p class='labels'>Seconds</p>
+              </div>
+            </div>
+          </div>
+          <div class='stop-button-top'></div>
+          <div class='stop-button-bottom'></div>
+          <div class='start-button-top'></div>
+          <div class='start-button-bottom'></div>
+        </div>
+        </section>
+
+    <nav class="cassette-menu">
+        <div class="power-indicator">
+            <div class="led"></div>
+            <span>PWR</span>
+        </div>
+        <div class="tape-control" onclick="window.location.href='/design'">
+            <input checked type="radio" name="nav" id="btn-design">
+            <label for="btn-design" class="btn-tape">Design</label>
+        </div>
+        <div class="tape-control" onclick="window.location.href='/noise'">
+            <input type="radio" name="nav" id="btn-noise">
+            <label for="btn-noise" class="btn-tape">Noise</label>
+        </div>
+        <div class="tape-control" onclick="window.location.href='/words'">
+            <input type="radio" name="nav" id="btn-words">
+            <label for="btn-words" class="btn-tape">Words</label>
+        </div>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>
