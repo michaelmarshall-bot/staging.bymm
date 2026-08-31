@@ -811,7 +811,7 @@ var module, countdown = function(r) {
 // Custom Code
 
 setInterval(function() {
-	var timespan = countdown(new Date("02/14/2017"), new Date());
+	var timespan = countdown(new Date("08/25/2026"), new Date());
 
 	var years = document.getElementById('years');
 	years.innerHTML = timespan.years

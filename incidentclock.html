@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Incident Reporting | by MM</title>
+    <title>Incident Log | by MM</title>
     <link rel="stylesheet" href="styles.css">
     <!--Favicon-->
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/index2/apple-touch-icon.png">
@@ -515,7 +515,7 @@
 
         .date-box {
           background: transparent;
-          border: 4px black solid;
+          border: var(--border-std);
           border-radius: 10px 10px 10px 0px;
           min-height: 180px;
           overflow: none;
@@ -541,7 +541,7 @@
             font-size: calc((var(--type-ratio)) * 0.8rem);
             margin-inline-start: 15px;
             writing-mode: vertical-lr;
-            left: 30%;
+            left: 29%;
         }
 
         .title-wrapper {
@@ -550,8 +550,226 @@
           padding: 0px 0px 25px 0px;
         }
 
-        .title {
+        /* Timeline */
+        .timelineSection {
+            padding-bottom: ;
+        }
 
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        .timeline {
+        position: relative;
+        width: 100%;
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 15px 0;
+        }
+
+        .timeline::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        background: var(--hed-colour);
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -1px;
+        }
+
+        .container {
+        padding: 15px 30px;
+        position: relative;
+        background: inherit;
+        width: 50%;
+        }
+
+        .container.left {
+        left: 0;
+        }
+
+        .container.right {
+        left: 50%;
+        }
+
+        .container::after {
+        content: '';
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        top: calc(50% - 8px);
+        right: -8px;
+        background: var(--bg-main);
+        border: var(--border-std);
+        border-radius: 16px;
+        z-index: 1;
+        }
+
+        .container.right::after {
+        left: -8px;
+        }
+
+        .container::before {
+        content: '';
+        position: absolute;
+        width: 50px;
+        height: 2px;
+        top: calc(50% - 1px);
+        right: 8px;
+        background: var(--hed-colour);
+        z-index: 1;
+        }
+
+        .container.right::before {
+        left: 8px;
+        }
+
+        .container .date {
+        position: absolute;
+        display: inline-block;
+        top: calc(50% - 8px);
+        text-align: center;
+        font-weight: bold;
+        color: var(--hed-colour);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        z-index: 1;
+        }
+
+        .container.left .date {
+        right: -75px;
+        }
+
+        .container.right .date {
+        left: -75px;
+        }
+
+        .container .icon {
+        position: absolute;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        padding: 0px;
+        top: calc(50% - 8px);
+        border: var(--border-std);
+        text-align: center;
+        z-index: 1;
+        }
+
+        .container.left .icon {
+        right: 56px;
+        }
+
+        .container.right .icon {
+        left: 56px;
+        }
+
+        .container .content {
+        padding: 30px 90px 30px 30px;
+        background: none;
+        position: relative;
+        border-radius: 0 500px 500px 0;
+        }
+
+        .container.right .content {
+        padding: 30px 30px 30px 90px;
+        border-radius: 500px 0 0 500px;
+        }
+
+        .container .content h2 {
+        margin: 0 0 10px 0;
+        font-size: 18px;
+        font-weight: normal;
+        }
+
+        .container .content p {
+        margin: 0;
+        font-size: 16px;
+        line-height: 22px;
+        color: #000000;
+        }
+
+         .logPrimer {
+            max-width: 460px;
+            margin: auto auto 2rem auto;
+            padding: 2em;
+            border: var(--border-std);
+            
+        }
+
+        .logPrimer > h2 {
+            font-size: 18px;
+            font-weight: normal;
+        }
+
+        @media (max-width: 767.98px) {
+        .timeline::after {
+            left: 90px;
+        }
+
+        .container {
+            width: 100%;
+            padding-left: 120px;
+            padding-right: 30px;
+        }
+
+        .container.right {
+            left: 0%;
+        }
+
+        .container.left::after, 
+        .container.right::after {
+            left: 82px;
+        }
+
+        .container.left::before,
+        .container.right::before {
+            left: 100px;
+            border-color: transparent var(--hed-colour) transparent;
+        }
+
+        .container.left .date,
+        .container.right .date {
+            right: auto;
+            left: 15px;
+        }
+
+        .container.left .icon,
+        .container.right .icon {
+            right: auto;
+            left: 146px;
+        }
+
+        .container.left .content,
+        .container.right .content {
+            padding: 30px 30px 30px 90px;
+            border-radius: 500px 0 0 500px;
+        }
+
+        .logPrimer {
+            max-width: 587px;
+        }
+        }
+
+        /*Colour Inversion*/
+
+        body {
+            filter: invert(1)
+        }
+
+        footer {
+            filter: invert(1);
+        }
+
+        .cassette-menu {
+            display: none;
+        }
+
+        .dust-overlay {
+            opacity: 0.5;
         }
     </style>
 </head>
@@ -636,84 +854,179 @@
             </filter> 
         </svg>
     <div class="scroll-container">
-        <!--<section class="section-behind hero-section" id="lcd-screen">
-        </section>
-        <div class="hero-fade"></div>
-        <section class="section-above testimonial-section">
-            <div class="testimonial-wrapper">
-                <button class="slideArrow prev">↢</button>
-                <button class="slideArrow next">↣</button>
-                <div class="slider-container">
-                    <div class="slider-track">
-                        <div class="slide mockTitle">
-                            <h2><span>&ensp;☞</span>Elyse Jocelyn<span>&ensp;☞</span>
-                            </h2>
-                        </div>
-                        <div class="slide">
-                            <div class="card">
-                                <div>Elyse Jocelyn Photography</div>
-                                <div class="mockImg">
-                                    <img src="/assets/mocks/elysejocelyn/ejcard.jpg"/>
-                                    <blockquote><span></span></blockquote>
-                                </div>
-                                <div class="imgCaption">
-                                    <p><span>Impasse:</span> How do you capture a qualitative service in a brand?</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="hardware-track">
-                        <div class="hardware-indicator"></div>
-                </div>
-                <div class="contextBlock">
-                    <div class="contextCard">
-                        <h2>Brand</h2>
-                        <p>Elyse Jocelyn Photography needed a concrete identity for a growing business that could adapt as it bloomed. The result is a logo and brand mark that’s versatile, distinct, and&mdash;with its stylistic nod to retro photography&mdash;timeless.</p>
-                        <div class="flex-buffer"></div>
-                    </div>
-                </div>
-            </div>
-        </section>-->
         <section class="section-behind hero-section" id="lcd-screen">
          <div class='timer-wrapper'>
             <div class='title-wrapper'>
-              <h1 class='title'>Time Since Last Incident</h1>
+              <h2 class='title'>Days Since Last Incident</h2>
             </div>
           <div class='timer'>
             <div class='time-box'>
-              <div class='date-box'>
-                <p id='years' class='intervals'></p>
-                <p class='labels'>Years</p>
-              </div>
-              <div class='date-box'>
-                <p id='months' class='intervals'></p>
-                <p class='labels'>Months</p>
-              </div>
-              <div class='date-box'>
-                <p id='days' class='intervals'></p>
-                <p class='labels'>Days</p>
-              </div>
-              <div class='date-box'>
-                <p id='hours' class='intervals'></p>
-                <p class='labels'>Hours</p>
-              </div>
-              <div class='date-box'>
-                <p id='minutes' class='intervals'></p>
-                <p class='labels'>Minutes</p>
-              </div>
-              <div class='date-box'>
-                <p id='seconds' class='intervals'></p>
-                <p class='labels'>Seconds</p>
-              </div>
+                <div class='date-box'>
+                    <p id='years' class='intervals'></p>
+                    <p class='labels'>Years</p>
+                </div>
+                <div class='date-box'>
+                    <p id='months' class='intervals'></p>
+                    <p class='labels'>Months</p>
+                </div>
+                <div class='date-box'>
+                    <p id='days' class='intervals'></p>
+                    <p class='labels'>Days</p>
+                </div>
+                <div class='date-box'>
+                    <p id='hours' class='intervals'></p>
+                    <p class='labels'>Hours</p>
+                </div>
+                <div class='date-box'>
+                    <p id='minutes' class='intervals'></p>
+                    <p class='labels'>Minutes</p>
+                </div>
+                <div class='date-box'>
+                    <p id='seconds' class='intervals'></p>
+                    <p class='labels'>Seconds</p>
+                </div>
             </div>
-          </div>
-          <div class='stop-button-top'></div>
-          <div class='stop-button-bottom'></div>
-          <div class='start-button-top'></div>
-          <div class='start-button-bottom'></div>
-        </div>
+                <div class='stop-button-top'></div>
+                <div class='stop-button-bottom'></div>
+                <div class='start-button-top'></div>
+                <div class='start-button-bottom'></div>
         </section>
+        <div class="hero-fade"></div>
+        <section class="section-behind timelineSection">
+            <div class="timeline">
+                <div class="container left">
+                    <div class="date">25 Aug</div>
+                    <i class="icon fa fa-home"></i>
+                    <div class="content">
+                    <h2>[War Correspondence] Bed Bug Incursion</h2>
+                    <p>A bed bug splinter group from neighbouring territory has attempted to capitalize on the disruption caused by the avian alliance. The plans for the coup were discovered before the splinter group gained a substantial foothold, though cutting off their supply lines and means of retreat has come at a substantial cost to the defending force. Experts are still weighing in on the controversial use of chemical weapons but the strong response is predicted to have eradicated the cell entirely. Confirmation is expected in the coming weeks.
+                    </p>
+                    </div>
+                </div>
+                <div class="container right">
+                    <div class="date">2 Aug</div>
+                    <i class="icon fa fa-gift"></i>
+                    <div class="content">
+                    <h2>[Infrastructure] Power Failure</h2>
+                    <p>
+                        Building wide power cut, lasting approximately 4 hours, disrupted productivity at the business factory this morning.
+                    </p>
+                    </div>
+                </div>
+                <div class="container left">
+                    <div class="date">13 Jul</div>
+                    <i class="icon fa fa-user"></i>
+                    <div class="content">
+                    <h2>[War Correspondence] Feline Aid</h2>
+                    <p>
+                        Despite the failure of anti-avian measures, feline mercenary receives commedation for honourable discharge of duty and has been permanently integrated into the home guard.
+                    </p>
+                    </div>
+                </div>
+                <div class="container right">
+                    <div class="date">11 Jul</div>
+                    <i class="icon fa fa-user"></i>
+                    <div class="content">
+                    <h2>[Health] Tongue Surgery</h2>
+                    <p>
+                        <i>See, frenectomy - lingual freneulum.</i> Surgery considered a success by doctors, is considered a failure by patient - failed to fix accent as promised.
+                    </p>
+                    </div>
+                </div>
+                <div class="container left">
+                    <div class="date">16 Jun</div>
+                    <i class="icon fa fa-cog"></i>
+                    <div class="content">
+                    <h2>[Government] Will Signing</h2>
+                    <p>
+                        Last will and testament signed and witnessed. Deemed prudent after recent events.
+                    </p>
+                    </div>
+                </div>
+                <div class="container right">
+                    <div class="date">15 May</div>
+                    <i class="icon fa fa-certificate"></i>
+                    <div class="content">
+                    <h2>[War Correspondence] Feline Detachment Deployed</h2>
+                    <p>
+                        Temporary commission of feline mercenary begins in the ongoing conflict on the western balcony front. Further casualities are feared as the defining balcony structure, the plant shelving, has collapsed after continued occupation and bombardment by the avian alliance, shattering a mirror and opening several vulnerabilities for furthe emplacements.
+                    </p>
+                    </div>
+                </div>
+                <div class="container left">
+                    <div class="date">21 Apr</div>
+                    <i class="icon fa fa-cog"></i>
+                    <div class="content">
+                    <h2>[Health] Sleep Study</h2>
+                    <p>
+                        Inconclusive. Sleep specialist quoted as saying "What ever the problem is, it's day shift's."
+                    </p>
+                    </div>
+                </div>
+                <div class="container right">
+                    <div class="date">02 Apr</div>
+                    <i class="icon fa fa-certificate"></i>
+                    <div class="content">
+                    <h2>[War Correspondence] War</h2>
+                    <p>
+                        The trend of peaceful coexistence has been shattered this week as what has become known as the Pigeon War broke out. A series of basic infrastructure and improvement projects in the balcony region were carpet bombed within hours of their completion by avian insurgents. Several terracotta vessels intended for agricultural initiatives were destroyed, while one has been preserved as an assumed base of operations. More on the conflict as it develops.
+                    </p>
+                    </div>
+                </div>
+                <div class="container right">
+                    <div class="date">09 Mar</div>
+                    <i class="icon fa fa-certificate"></i>
+                    <div class="content">
+                    <h2>[Health] Shingles Outbreak</h2>
+                    <p>
+                        Virus, initially believed to be chemical burns induced by 20 year out-of-date analgesic heat rub, cripple domestic organization initiatives.
+                    </p>
+                    </div>
+                </div>
+                <div class="container left">
+                    <div class="date">31 Jan</div>
+                    <i class="icon fa fa-cog"></i>
+                    <div class="content">
+                    <h2>[Current Events] Death in the Family</h2>
+                    <p>
+                        Elderly Scottish woman falls 2 months short of 100th birthday prompting international outpouring of relatives from Europe and North America.
+                    </p>
+                    </div>
+                </div>
+                 <div class="container right">
+                    <div class="date">20 Jan</div>
+                    <i class="icon fa fa-certificate"></i>
+                    <div class="content">
+                    <h2>[Infrastructure] Migration</h2>
+                    <p> Relocation to metropolitan centre invites expanded opportunities for job seeker.
+                    </p>
+                    </div>
+                </div>
+            </div>
+            <div class="logPrimer">
+                    <h2>In honour of the daily news cycle, I've decided to create an incident log. 2026 has been a year.</h2>
+            </div>
+
+        </section>
+
+    <footer class="section-above main-footer">
+            <div class="footer-id">
+                <p><a href="/index" style="text-decoration: none;"><strong>MIKE MARSHALL</strong></a></p>
+                <p>@bymsmarshall</p>
+                <div class="social-links">
+                    <a href="mailto:getintouch@bymichaelmarshall.com">Email</a>
+                    <a href="https://www.linkedin.com/in/ms-marshall/">LinkedIn</a>
+                    <a href="https://instagram.com/bymsmarshall">Instagram</a>
+                    <a href="https://substack.com/@bymsmarshall">Substack</a>
+                </div>
+            </div>
+            <div class="footer-legal">
+                <a href="/terms">Terms & Privacy</a>
+                <p>© <span id="year"></span> All Rights Reserved</p>
+            </div>
+        </footer>
+    </div>
+        
 
     <nav class="cassette-menu">
         <div class="power-indicator">
@@ -721,7 +1034,7 @@
             <span>PWR</span>
         </div>
         <div class="tape-control" onclick="window.location.href='/design'">
-            <input checked type="radio" name="nav" id="btn-design">
+            <input type="radio" name="nav" id="btn-design">
             <label for="btn-design" class="btn-tape">Design</label>
         </div>
         <div class="tape-control" onclick="window.location.href='/noise'">
